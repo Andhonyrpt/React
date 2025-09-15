@@ -58,7 +58,7 @@ function BannerCarousel({ banners }) {
             {/*Controles de navegación*/}
             <button
                 className="carousel-btn carousel-btn-prev"
-                oncClick={goToPrevious}
+                onClick={goToPrevious}
                 aria-label="Anterior"
             >
                 &#8249;
@@ -66,7 +66,7 @@ function BannerCarousel({ banners }) {
 
             <button
                 className="carousel-btn carousel-btn-next"
-                oncClick={goToNext}
+                onClick={goToNext}
                 aria-label="Siguiente"
             >
                 &#8250;

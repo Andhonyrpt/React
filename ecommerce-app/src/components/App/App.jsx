@@ -1,3 +1,4 @@
+import Layout from "../../layout/Layout.jsx";
 import BannerCarousel from "../BannerCarousel/BannerCarousel.jsx";
 
 function App() {
@@ -40,19 +41,14 @@ function App() {
     },
   ];
 
-
-
   function click() {
     alert("OK");
   };
 
   return (
-    <div className="App">
-      <main>
-        <BannerCarousel banners={images} />
-      </main>
-
-    </div>
+    <Layout>
+      <BannerCarousel banners={images} />
+    </Layout>
   );
 };
 

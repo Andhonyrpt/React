@@ -67,7 +67,7 @@
 /* Controles de navegación */
 .carousel-btn {
     position: absolute;
-    top: 70%;
+    top: 50%;
     transform: translateY(-50%);
     background: rgba(255, 255, 255, 0.2);
     border: none;
@@ -184,4 +184,74 @@
         width: 10px;
         height: 10px;
     }
+}
+
+@media (max-width: 480px) {
+    .carousel-container {
+        height: 300px;
+        border-radius: var(--r2);
+    }
+
+    .banner-content {
+        padding: 24px 16px;
+    }
+
+    .banner-content .h1 {
+        margin-bottom: 12px;
+    }
+
+    .banner-content .muted {
+        font-size: 14px;
+        margin-bottom: 16px;
+    }
+}
+
+@media(prefers-reduced-motion: no-preference) {
+    .banner-slider {
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(1.05);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+
+/* Para usuarios que prefieren movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+
+    .banner-slider,
+    .carousel-btn,
+    .indicator {
+        transition: none;
+    }
+
+    .banner-slider {
+        animation: none;
+    }
+}
+
+/* Mejoras para modo oscuro */
+[data-theme="dark"] .banner-slide::before {
+    background: linear-gradient(135deg,
+            rgba(0, 0, 0, 0.6) 0%,
+            rgba(0, 0, 0, 0.3) 50%,
+            transparent 100%);
+}
+
+[data-theme="dark"] .carousel-btn {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .carousel-btn:hover {
+    background: rgba(0, 0, 0, 0.5);
+    border-color: rgba(255, 255, 255, 0.3);
 }
