@@ -2,10 +2,16 @@
   text-align: center;
 }
 
-.main-container {
+.main-container-album {
   margin-left: 60px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
-  padding: 10px;
+}
+
+.main-container-photo {
+  margin-left: 60px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
 }

@@ -1,6 +1,9 @@
+import './StatusBar.css';
 
-export default function StatusBar(){
-  return (<div>
-    <h2>Status Bar</h2>
+export default function StatusBar() {
+  return (
+    <div className="status-bar">
+      <h2>3 Albums Total</h2>
+      <button>+</button>
     </div>);
 }

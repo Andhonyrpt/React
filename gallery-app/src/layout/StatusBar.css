@@ -1,0 +1,35 @@
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f7e0c4;
+    padding: 4px 0;
+    margin-bottom: 24px;
+    margin-top: -23px;
+    width: 1350px;
+}
+
+.status-bar h2 {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.status-bar button {
+    background-color: #e7c7a7;
+    color: #bd7d3d;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 80px;
+    font-weight: bolder;
+    transition: background-color 0.3s;
+}
+
+.status-bar button:hover {
+  background-color: #d6b896; /* Cambio de color al pasar el cursor */
+}

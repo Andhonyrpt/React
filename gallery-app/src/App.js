@@ -2,7 +2,8 @@ import './App.css';
 import Layout from './layout/Layout';
 import AlbumCard from './molecules/AlbumCard';
 import PhotoCard from './molecules/PhotoCard';
-import albumsData from "../src/data/albums";
+import albums from "../src/data/albums";
+import photosData from '../src/data/photos';
 
 
 function App() {
@@ -19,12 +20,17 @@ function App() {
     <div className="App" >
       <h1>App</h1>
       <Layout>
-        <div className='main-container'>
-          {albumsData.map((album, i) => {
+        <div className='main-container-album'>
+          {albums.map((album, i) => {
             return <AlbumCard key={i} album={album} />;
           })}
         </div>
-        {/* <PhotoCard image={image}></PhotoCard> */}
+
+        {/* <div className='main-container-photo'>
+          {photosData.map((photo, i) => {
+            return <PhotoCard key={i} image={photo} />
+          })};
+        </div> */}
       </Layout>
     </div>
   );

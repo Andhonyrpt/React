@@ -1,4 +1,4 @@
-import albumsData from "../data/albums.json";
+import albumsData from "../data/albums";
 import AlbumCard from "../molecules/AlbumCard";
 import './albums.css';
 
