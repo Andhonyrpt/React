@@ -1,32 +1,36 @@
 import { useState } from 'react';
 import './App.css';
 import Layout from './layout/Layout';
-// import Albums from './pages/Albums';
+import Albums from './pages/albums';
 import Photos from './pages/Photos';
-import AlbumCard from './molecules/AlbumCard';
-import PhotoCard from './molecules/PhotoCard';
-import photosData from '../src/data/photos';
+import EditAlbum from './pages/EditAlbum';
+import EditPhoto from './pages/EditPhoto';
 
 
 function App() {
-  const [currentView,setCurrentView]=useState('photos');
+  const [currentView, setCurrentView] = useState('photos');
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'albums':
+        return <Albums />
+      case 'photos':
+        return <Photos />
+      case 'newAlbum':
+        return <EditAlbum />
+      case 'newPhoto':
+        return <EditPhoto />
+      default:
+        return <Photos />
+    };
+  };
 
   return (
 
     <div className="App" >
-      <h1>App</h1>
-      <Layout>
-        {/* <div className='main-container-album'>
-          {albums.map((album, i) => {
-            return <AlbumCard key={i} album={album} />;
-          })}
-        </div> */}
-        <Albums />
-        {/* <div className='main-container-photo'>
-          {photosData.map((photo, i) => {
-            return <PhotoCard key={i} image={photo} />
-          })};
-        </div> */}
+      <h1>Gallery App</h1>
+      <Layout currentView={currentView} onViewChange={setCurrentView}>
+        {renderCurrentView()}
       </Layout>
     </div>
   );

@@ -1,3 +1,7 @@
 .layout{
     max-width: 1300px;
 }
+
+.main-container{
+    margin-left: 60px;
+}

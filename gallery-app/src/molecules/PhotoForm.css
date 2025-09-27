@@ -1,0 +1,89 @@
+.new-photo-container {
+    background-color: azure;
+    min-height: calc(100vh - 100px);
+    padding: 20px;
+}
+
+.photo-form {
+    background-color: honeydew;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 30px;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.new-photo-container h3 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    color: #366;
+    padding-bottom: 30px;
+}
+
+.photo-form-content {
+    margin-bottom: 20px;
+}
+
+.photo-form-content label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #956;
+}
+
+.photo-form-content input,
+textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 15px;
+    color: #555;
+    border-radius: 5px;
+}
+
+.photo-form-content textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.photo-form-actions {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.photo-form-actions button {
+    padding: 10px 25px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 0 10px;
+    transition: background-color 0.2s;
+}
+
+.photo-form-actions .photo-create-btn {
+    background-color: #a5f563;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.photo-form-actions .photo-cancel-btn {
+    background-color: rgb(247, 81, 81);
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+.photo-create-btn:hover {
+    background-color: #192;
+    color: white;
+}
+
+.photo-cancel-btn:hover {
+    background-color: #912;
+    color: white;
+}

@@ -16,3 +16,7 @@
     transition: background-color 0.3s;
     width: 100%;
 }
+
+.nav button:disabled {
+    cursor: not-allowed;
+}

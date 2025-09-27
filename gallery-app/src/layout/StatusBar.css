@@ -2,34 +2,33 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f7e0c4;
+    background-color: #f3ca98;
     padding: 4px 0;
     margin-bottom: 24px;
     margin-top: -23px;
     width: 1350px;
 }
 
-.status-bar h2 {
+.status-bar span {
     margin-left: 10px;
     font-weight: bold;
+    font-size: 24px;
 }
 
 .status-bar button {
-    background-color: #e7c7a7;
-    color: #bd7d3d;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
+    background-color: #f7e0c4;
+    border: 1px solid #333;
+    color: #b8621e;
+    user-select: none;
+    border-radius: 10px;
+    padding: 15px 15px;
     margin-right: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
-    font-size: 80px;
-    font-weight: bolder;
+    font-size: 14px;
+    font-weight: bold;
     transition: background-color 0.3s;
 }
 
 .status-bar button:hover {
-  background-color: #d6b896; /* Cambio de color al pasar el cursor */
+    background-color: #d6b896;
 }

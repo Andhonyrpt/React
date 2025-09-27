@@ -1,6 +1,6 @@
 import albumsCollection from "../data/albums";
 import AlbumCard from "../molecules/AlbumCard";
-// import './albums.css';
+import './Albums.css';
 
 export default function Albums() {
 

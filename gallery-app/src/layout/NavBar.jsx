@@ -1,9 +1,19 @@
 import './NavBar.css';
 
-export default function NavBar() {
+export default function NavBar({ currentView, onViewChange }) {
   return (
-  <div className='nav'>
-    <button>Albums</button>
-    <button>Photos</button>
-  </div>);
+    <div className='nav'>
+      <button
+        onClick={() => onViewChange('albums')}
+        disabled={currentView === 'albums'}
+      >
+        Albums
+      </button>
+      <button
+        onClick={() => onViewChange('photos')}
+        disabled={currentView === 'photos'}
+      >
+        Photos
+      </button>
+    </div>);
 }
