@@ -1,5 +1,6 @@
 const albums = [
   {
+    id:1,
     title: "City Nights",
     description: "Luces, neón y lluvia en la ciudad.",
     images: [
@@ -10,6 +11,7 @@ const albums = [
     ],
   },
   {
+    id:2,
     title: "Sierra Fría",
     description: "Bosques y mañanas frías cerca de Aguascalientes.",
     images: [
@@ -20,6 +22,7 @@ const albums = [
     ],
   },
   {
+    id:3,
     title: "Road Trip",
     description: "Kilómetros de carretera, playlist infinita.",
     images: [
@@ -30,6 +33,7 @@ const albums = [
     ],
   },
   {
+    id:4,
     title: "Cafecito & Código",
     description: "Latte art y commits con cafeína.",
     images: [
@@ -40,6 +44,7 @@ const albums = [
     ],
   },
   {
+    id:5,
     title: "Minimal Home",
     description: "Luz, sombras y espacios tranquilos.",
     images: [
@@ -50,6 +55,7 @@ const albums = [
     ],
   },
   {
+    id:6,
     title: "Industrial Vibes",
     description: "Metal, textura y líneas fuertes.",
     images: [

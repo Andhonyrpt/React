@@ -1,5 +1,6 @@
 const photos = [
   {
+    id: 1,
     url: "https://picsum.photos/id/50/1200/800",
     title: "Parque Tres Centurias",
     description: "Andenes antiguos con una luz dorada de tarde.",

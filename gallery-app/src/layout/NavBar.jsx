@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import './NavBar.css';
 
 export default function NavBar({ currentView, onViewChange }) {
   return (
-    <div className='nav'>
+    <nav className='nav-bar'>
       <button
         onClick={() => onViewChange('albums')}
         disabled={currentView === 'albums'}
@@ -15,5 +16,10 @@ export default function NavBar({ currentView, onViewChange }) {
       >
         Photos
       </button>
-    </div>);
-}
+    </nav>);
+};
+
+NavBar.propTypes = {
+  currentView: PropTypes.string.isRequired,
+  onViewChange: PropTypes.func.isRequired
+};

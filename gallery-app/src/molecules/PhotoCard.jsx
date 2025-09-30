@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import TagButton from "../atoms/TagButton";
 import DeleteButton from "../atoms/DeleteButton";
 import './PhotoCard.css';
@@ -18,4 +19,15 @@ export default function PhotoCard({ image }) {
             </div>
         </div>
     );
+};
+
+PhotoCard.propTypes = {
+    image: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        title: PropTypes.string.isRequired,
+        url: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        location: PropTypes.string,
+        tags:PropTypes.arrayOf(PropTypes.string).isRequired
+    }).isRequired
 };

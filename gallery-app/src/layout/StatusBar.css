@@ -9,26 +9,26 @@
     width: 1350px;
 }
 
-.status-bar span {
-    margin-left: 10px;
+.status-left {
+    margin-left: 15px;
     font-weight: bold;
     font-size: 24px;
 }
 
-.status-bar button {
+.btn {
     background-color: #f7e0c4;
     border: 1px solid #333;
     color: #b8621e;
     user-select: none;
-    border-radius: 10px;
-    padding: 15px 15px;
+    border-radius: 50%;
+    padding: 0 12px;
     margin-right: 10px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 50px;
     font-weight: bold;
     transition: background-color 0.3s;
 }
 
-.status-bar button:hover {
+.btn:hover {
     background-color: #d6b896;
 }

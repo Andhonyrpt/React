@@ -1,5 +1,16 @@
-export default function TagButton({name}){
-  return(<div> TAG:
-    <p>{name}</p>
-    </div>);
-}
+import PropTypes from "prop-types";
+
+export default function TagButton({ label, onClick, active = false, size = 'md' }) {
+  return (
+    <button type="button" onClick={onClick}>
+      <span>#</span>
+      <span>{label}</span>
+    </button>);
+};
+
+TagButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  onClick: PropTypes.func,
+  active: PropTypes.bool,
+  size: PropTypes.string
+};

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import DeleteButton from "../atoms/DeleteButton";
 import PlayButton from "../atoms/PlayButton";
 import TagButton from "../atoms/TagButton";
@@ -10,7 +11,7 @@ export default function AlbumCard({ album }) {
       <div className="images-container">
         {album && album.images.length > 0 ?
           album.images.map((img, i) => {
-            return <img src={img.url} alt={img.name} className="album-image" />
+            return <img key={img.url || i} src={img.url} alt={img.name} className="album-image" />
           }) :
           <p>No hay imágenes para mostrar en este album</p>}
       </div>
@@ -27,4 +28,18 @@ export default function AlbumCard({ album }) {
         </div>
       </div>
     </div>);
-}
+};
+
+AlbumCard.propTypes = {
+  album: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    images: PropTypes.arrayOf(
+      PropTypes.shape({
+        url: PropTypes.string.isRequired,
+        name: PropTypes.string
+      })
+    )
+  }).isRequired
+};
