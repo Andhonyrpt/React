@@ -6,12 +6,13 @@ import './Layout.css';
 export default function Layout({ children, currentView, onViewChange }) {
 
   return (
-    <div className="layout">
-      <header>
+    <div className="app-layout">
+      <header className="app-header">
+        <h1 className="app-title">Gallery App</h1>
         <NavBar currentView={currentView} onViewChange={onViewChange} />
         <StatusBar currentView={currentView} onViewChange={onViewChange} />
       </header>
-      <main className="main-container">
+      <main className="app-main">
         {children}
       </main>
     </div>);

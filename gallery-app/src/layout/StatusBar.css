@@ -2,33 +2,23 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #f3ca98;
-    padding: 4px 0;
-    margin-bottom: 24px;
-    margin-top: -23px;
-    width: 1350px;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: linear-gradient(135deg, var(--warning-color) 0%, #f6a723 100%);
+    border-bottom: var(--border-width) solid var(--border-color);
+    min-height: var(--statusbar-height);
+    box-shadow: var(--shadow-xs);
 }
 
 .status-left {
-    margin-left: 15px;
-    font-weight: bold;
-    font-size: 24px;
+    display: flex;
+    align-items: center;
 }
 
-.btn {
-    background-color: #f7e0c4;
-    border: 1px solid #333;
-    color: #b8621e;
-    user-select: none;
-    border-radius: 50%;
-    padding: 0 12px;
-    margin-right: 10px;
-    cursor: pointer;
-    font-size: 50px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.btn:hover {
-    background-color: #d6b896;
+.status-count,
+.status-title {
+    font-size: var(--font-size-sm);
+    color: var(--dark-color);
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
 }

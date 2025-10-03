@@ -1,15 +1,30 @@
-import albumsCollection from "../data/albums";
 import AlbumCard from "../molecules/AlbumCard";
-import './Albums.css';
+import albumsCollection from "../data/albums";
+import "./Pages.css";
 
 export default function Albums() {
+    const handlePlayAlbum = (album) => {
+        console.log('Playing album:', album.title);
+        // Funcionalidad de reproducir álbum
+    };
+
+    const handleDeleteAlbum = (album) => {
+        console.log('Deleting album:', album.title);
+        // Funcionalidad de eliminar álbum
+    };
 
     return (
-        <div className="album-grid">
-            {albumsCollection.map((album, i) => {
-                return <AlbumCard key={i} album={album} />;
-            })}
+        <div className="albums-container">
+            <div className="albums-grid">
+                {albumsCollection.map((album, index) => (
+                    <AlbumCard
+                        key={album.id || index}
+                        album={album}
+                        onPlay={handlePlayAlbum}
+                        onDelete={handleDeleteAlbum}
+                    />
+                ))}
+            </div>
         </div>
-
     );
-};
+}

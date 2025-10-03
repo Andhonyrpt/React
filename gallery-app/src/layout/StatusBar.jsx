@@ -1,42 +1,45 @@
 import PropTypes from 'prop-types';
 import albumsCollection from '../data/albums';
 import photosCollection from '../data/photos';
+import { VIEWS } from '../utils/constants';
 import './StatusBar.css';
 
 export default function StatusBar({ currentView, onViewChange }) {
 
-  const statusText = () => {
-    if (currentView === 'albums') {
-      return albumsCollection.length;
-    }
-    else if (currentView === 'photos') {
-      return photosCollection.length;
-    }
-  };
-
   const getStatusInfo = () => {
     switch (currentView) {
-      case 'photos':
+      case VIEWS.PHOTOS:
         return {
           count: photosCollection.length,
           label: 'Photos Total',
-          addAction: 'newPhoto'
+          canAdd: true,
+          addAction: VIEWS.NEW_PHOTO
         };
-        break;
-      case 'albums':
+      case VIEWS.ALBUMS:
         return {
           count: albumsCollection.length,
           label: 'Albums Total',
-          addAction: 'newAlbum'
+          canAdd: true,
+          addAction: VIEWS.NEW_ALBUM
         };
-        break;
-      default:
+      case VIEWS.NEW_PHOTO:
         return {
           count: null,
-          label: null,
-          addAction: null
+          label: 'Adding New Photo',
+          canAdd: false
         };
-        break;
+      case VIEWS.NEW_ALBUM:
+        return {
+          count: null,
+          label: 'Creating New Album',
+          canAdd: false
+        };
+      default:
+        return {
+          count: 0,
+          label: 'Items',
+          canAdd: false
+        };
     };
   };
 
@@ -48,12 +51,23 @@ export default function StatusBar({ currentView, onViewChange }) {
         {statusInfo.count !== null && (
           <span className='status-count'>{statusInfo.count} {statusInfo.label}</span>
         )}
+        {statusInfo.count === null && (
+          <span className='status-title'>{statusInfo.label}</span>
+        )}
       </div>
-      {statusInfo.count !== null && (
-        <button type='button' className='btn btn--add btn--medium'
-          onClick={() => onViewChange(statusInfo.addAction)}>+</button>
+
+      {statusInfo.canAdd && (
+        <button
+          type="button"
+          className="btn btn--add btn--medium"
+          onClick={() => onViewChange(statusInfo.addAction)}
+          aria-label={`Add new ${statusInfo.addAction.replace('new', '').toLowerCase()}`}
+        >
+          <span className="btn-icon">+</span>
+        </button>
       )}
-    </div>);
+    </div>
+  );
 };
 
 StatusBar.propTypes = {

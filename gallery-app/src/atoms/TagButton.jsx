@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
+import { BUTTON_SIZES } from '../utils/constants';
+import "./Button.css";
 
-export default function TagButton({ label, onClick, active = false, size = 'md' }) {
+export default function TagButton({ label, onClick, active = false, size = BUTTON_SIZES.SMALL }) {
   return (
-    <button type="button" onClick={onClick}>
+    <button type="button"
+      className={`btn btn--tag btn--${size} ${active ? 'active' : ''}`}
+      onClick={onClick}
+      aria-label={`Tag:${label}`}>
       <span>#</span>
       <span>{label}</span>
     </button>);
