@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
 @import './variables.css';
+@import './utilities.css';
 
+/* Reset y base */
 * {
     box-sizing: border-box;
 }
@@ -23,6 +25,97 @@ body {
     color: var(--text-primary);
     background-color: var(--bg-secondary);
     min-height: 100vh;
+}
+
+/* Root app container */
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main app container */
+.App {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--bg-secondary);
+}
+
+/* Layout containers */
+.container {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+.container-fluid {
+    width: 100%;
+    padding: 0 var(--spacing-md);
+}
+
+/* Responsive containers */
+@media (max-width: 768px) {
+
+    .container,
+    .container-fluid {
+        padding: 0 var(--spacing-sm);
+    }
+}
+
+@media (min-width: 1200px) {
+    .container {
+        padding: 0 var(--spacing-xl);
+    }
+}
+
+/* Common component patterns */
+.card {
+    background: var(--bg-surface);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition-normal);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: var(--border-width) solid var(--border-color);
+    background: var(--bg-tertiary);
+}
+
+.card-content {
+    padding: var(--spacing-lg);
+}
+
+.card-footer {
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: var(--border-width) solid var(--border-color);
+    background: var(--bg-tertiary);
+}
+
+/* Loading states */
+.loading-skeleton {
+    background: linear-gradient(90deg, var(--neutral-200) 25%, var(--neutral-100) 50%, var(--neutral-200) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }
 
 /* Headings */
@@ -68,7 +161,7 @@ p {
     line-height: var(--line-height-relaxed);
 }
 
-/* links */
+/* Links */
 a {
     color: var(--text-accent);
     text-decoration: none;
@@ -88,7 +181,7 @@ a:hover {
 
 /* Focus styles */
 :focus-visible {
-    outline: 2px solid var(---primary-color);
+    outline: 2px solid var(--primary-color);
     outline-offset: 2px;
 }
 

@@ -1,10 +1,109 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
+import Button from '../atoms/Button';
+import { BUTTON_SIZES } from '../utils/constants';
 import './AlbumForm.css';
 
 export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCancel }) {
     const isEditing = action === 'edit';
     const title = isEditing ? 'Editar álbum' : 'Agregar nuevo álbum';
     const submitText = isEditing ? 'Guardar cambios' : 'Guardar álbum';
+
+    // Estado del formulario
+    const [formData, setFormData] = useState(() => ({
+        title: album?.title ?? "",
+        description: album?.description ?? "",
+        images: album?.images ?? [],
+        tags: album?.tags ?? [],
+    }));
+
+    // Estado para agregar nuevas imágenes
+    const [newImage, setNewImage] = useState({
+        url: "",
+        name: "",
+    });
+
+    const [errors, setErrors] = useState({});
+
+    // Manejar cambios en los inputs principales
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+
+        // Limpiar error del campo cuando el usuario empiece a escribir
+        if (errors[name]) {
+            setErrors((prev) => ({
+                ...prev,
+                [name]: "",
+            }));
+        }
+    };
+
+    // Manejar cambios en los inputs de nueva imagen
+    const handleNewImageChange = (e) => {
+        const { name, value } = e.target;
+        setNewImage((prev) => ({
+            ...prev,
+            [name]: value,
+        }));
+    };
+
+    // Agregar nueva imagen a la lista
+    const handleAddImage = () => {
+        if (newImage.url.trim() && newImage.name.trim()) {
+            // Validar URL básica
+            try {
+                new URL(newImage.url);
+                setFormData((prev) => ({
+                    ...prev,
+                    images: [...prev.images, { ...newImage }],
+                }));
+                setNewImage({ url: "", name: "" });
+            } catch {
+                alert("Por favor, ingresa una URL válida");
+            }
+        }
+    };
+
+    // Eliminar imagen de la lista
+    const handleRemoveImage = (index) => {
+        setFormData((prev) => ({
+            ...prev,
+            images: prev.images.filter((_, i) => i !== index),
+        }));
+    };
+
+    // Validar formulario
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.title.trim()) {
+            newErrors.title = "El título es requerido";
+        }
+
+        if (!formData.description.trim()) {
+            newErrors.description = "La descripción es requerida";
+        }
+
+        if (formData.images.length === 0) {
+            newErrors.images = "Debe agregar al menos una imagen";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    // Manejar envío del formulario
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        if (validateForm()) {
+            onSaveAlbum?.(formData);
+        }
+    };
 
     return (
         <div className="album-form">
@@ -20,7 +119,7 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
                 </p>
             </div>
 
-            <form className="album-form__form" onSubmit={() => { }}>
+            <form className="album-form__form" onSubmit={handleSubmit}>
                 {/* Título */}
                 <div className="form-group">
                     <label className="form-group__label" htmlFor="title">
@@ -31,12 +130,13 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
                         type="text"
                         id="title"
                         name="title"
-                        value={album?.title}
-                        onChange={() => { }}
-                        className="form-input"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        className={`form-input ${errors.title ? "form-input--error" : ""}`}
                         placeholder="Ej. City Nights"
                         required
                     />
+                    {errors.title && <span className="form-error">{errors.title}</span>}
                 </div>
 
                 {/* Descripción */}
@@ -48,13 +148,17 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
                     <textarea
                         id="description"
                         name="description"
-                        value={album?.description}
-                        onChange={() => { }}
-                        className="form-textarea"
+                        value={formData.description}
+                        onChange={handleInputChange}
+                        className={`form-textarea ${errors.description ? "form-input--error" : ""
+                            }`}
                         rows="3"
                         placeholder="Describe el álbum..."
                         required
                     />
+                    {errors.description && (
+                        <span className="form-error">{errors.description}</span>
+                    )}
                 </div>
 
                 {/* Imágenes */}
@@ -69,50 +173,56 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
                             <input
                                 type="url"
                                 name="url"
-                                value={album?.url}
-                                onChange={() => { }}
+                                value={newImage.url}
+                                onChange={handleNewImageChange}
                                 className="form-input"
                                 placeholder="URL de la imagen"
                             />
                             <input
                                 type="text"
                                 name="name"
-                                value={album?.name}
-                                onChange={() => { }}
+                                value={newImage.name}
+                                onChange={handleNewImageChange}
                                 className="form-input"
                                 placeholder="Nombre de la imagen"
                             />
-                            <button
+                            <Button
                                 type="button"
-                                onClick={() => { }}
-                                className="btn-add"
-                                disabled={!album?.url || !album?.name}
+                                onClick={handleAddImage}
+                                variant="primary"
+                                size={BUTTON_SIZES.MEDIUM}
+                                disabled={!newImage.url.trim() || !newImage.name.trim()}
                             >
                                 +
-                            </button>
+                            </Button>
                         </div>
 
+                        {errors.images && (
+                            <span className="form-error">{errors.images}</span>
+                        )}
+
                         {/* Lista de imágenes agregadas */}
-                        {album?.images.length > 0 && (
+                        {formData.images.length > 0 && (
                             <div className="added-images">
                                 <p className="added-images__title">
-                                    Imágenes agregadas ({album.images.length})
+                                    Imágenes agregadas ({formData.images.length})
                                 </p>
                                 <div className="added-images__list">
-                                    {album?.images.map((image, index) => (
+                                    {formData.images.map((image, index) => (
                                         <div key={index} className="added-image-item">
                                             <div className="added-image-item__info">
-                                                <p className="added-image-item__name">{image?.name}</p>
-                                                <p className="added-image-item__url">{image?.url}</p>
+                                                <p className="added-image-item__name">{image.name}</p>
+                                                <p className="added-image-item__url">{image.url}</p>
                                             </div>
-                                            <button
+                                            <Button
                                                 type="button"
-                                                onClick={() => { }}
-                                                className="btn-remove"
-                                                title="Eliminar imagen"
+                                                onClick={() => handleRemoveImage(index)}
+                                                variant="danger"
+                                                size={BUTTON_SIZES.SMALL}
+                                                ariaLabel="Eliminar imagen"
                                             >
                                                 ×
-                                            </button>
+                                            </Button>
                                         </div>
                                     ))}
                                 </div>
@@ -123,20 +233,18 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
 
                 {/* Acciones */}
                 <div className="form-actions">
-                    <button
+                    <Button
                         type="button"
                         onClick={onCancel}
-                        className="btn-secondary"
+                        variant="secondary"
+                        size={BUTTON_SIZES.MEDIUM}
                     >
                         Cancelar
-                    </button>
-                    <button
-                        type="submit"
-                        className="btn-primary"
-                    >
+                    </Button>
+                    <Button type="submit" variant="primary" size={BUTTON_SIZES.MEDIUM}>
                         <span>💾</span>
                         {submitText}
-                    </button>
+                    </Button>
                 </div>
             </form>
         </div>
@@ -144,7 +252,7 @@ export default function AlbumForm({ action = 'create', album, onSaveAlbum, onCan
 }
 
 AlbumForm.propTypes = {
-    action: PropTypes.oneOf(['create', 'edit']),
+    action: PropTypes.oneOf(["create", "edit"]),
     album: PropTypes.shape({
         id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         title: PropTypes.string,
@@ -152,10 +260,10 @@ AlbumForm.propTypes = {
         images: PropTypes.arrayOf(
             PropTypes.shape({
                 url: PropTypes.string.isRequired,
-                name: PropTypes.string.isRequired
+                name: PropTypes.string.isRequired,
             })
-        )
+        ),
     }),
     onSaveAlbum: PropTypes.func,
-    onCancel: PropTypes.func
+    onCancel: PropTypes.func,
 };

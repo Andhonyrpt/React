@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import DeleteButton from "../atoms/DeleteButton";
 import TagButton from "../atoms/TagButton";
+import PlayButton from '../atoms/PlayButton';
+import EditButton from '../atoms/EditButton';
+import { BUTTON_SIZES } from '../utils/constants';
 import "./PhotoCard.css";
 
-export default function PhotoCard({ photo, onDelete }) {
+export default function PhotoCard({ photo, onDelete, onEdit, onClick }) {
     if (!photo) {
         return (
             <div className="photo-card">
@@ -19,26 +22,44 @@ export default function PhotoCard({ photo, onDelete }) {
         <div className="photo-card">
             <div className="photo-card__image">
                 <img src={photo.url} alt={photo.title || photo.name} />
-
-                {/* Hover Details Overlay */}
-                <div className="photo-card__details">
-                    <div className="photo-card__details-content">
-                        <h4 className="photo-card__details-title">{photo.title || photo.name}</h4>
-                        <p className="photo-card__details-description">{photo.description}</p>
-                        <div className="photo-card__details-location">{photo.location}</div>
-                        <div className="photo-card__details-tags">
-                            {photo.tags && photo.tags.map((tag, index) => (
-                                <TagButton key={index} label={tag} />
-                            ))}
-                        </div>
-                    </div>
-                    <div className="photo-card__details-actions">
-                        <DeleteButton onClick={() => onDelete && onDelete(photo)} />
-                    </div>
-                </div>
             </div>
 
-            <div className="photo-card__title">{photo.title || photo.name}</div>
+            <div className="photo-card__info">
+                <div className="photo-card__info-content">
+                    <h3 className="photo-card__title">{photo.title || photo.name}</h3>
+                    {photo.description && (
+                        <p className="photo-card__description">{photo.description}</p>
+                    )}
+                    {photo.location && (
+                        <p className="photo-card__location">
+                            <span className="location-icon">📍</span>
+                            {photo.location}
+                        </p>
+                    )}
+                    {photo.tags && photo.tags.length > 0 && (
+                        <div className="photo-card__tags">
+                            {photo.tags.map((tag, index) => (
+                                <TagButton key={index} label={tag} size={BUTTON_SIZES.SMALL} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <div className="photo-card__actions">
+                    <EditButton
+                        onClick={() => onEdit?.(photo)}
+                        size={BUTTON_SIZES.SMALL}
+                    />
+                    <DeleteButton
+                        onClick={() => onDelete?.(photo)}
+                        size={BUTTON_SIZES.SMALL}
+                    />
+                    <PlayButton
+                        onClick={() => onClick?.(photo)}
+                        size={BUTTON_SIZES.SMALL}
+                    />
+                </div>
+            </div>
         </div>
     );
 }

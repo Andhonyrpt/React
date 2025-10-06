@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Layout from './layout/Layout';
 import Albums from './pages/albums';
@@ -24,8 +24,16 @@ function App() {
       const item = localStorage.getItem(key);
       return item ? JSON.parse(item) : defaultValue;
     } catch (error) {
-      console.error(error);
-      return defaultValue;
+      console.warn(`Error reading localStorage key "${key}"`, error);
+    }
+  };
+
+  // Función para guardar datos del localStorage
+  const saveToStorage = (key, value) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.warn(`Error saving to localStorage key "${key}":`, error);
     }
   };
 
@@ -33,32 +41,82 @@ function App() {
   const [albums, setAlbums] = useState(() => getFromStorage("gallery-albums", albumsCollection));
   const [photos, setPhotos] = useState(() => getFromStorage("gallery-photos", photosCollection));
 
-  const renderCurrentView = () => {
-    switch (currentView) {
-      case 'albums':
-        return <Albums />
-      case 'photos':
-        return <Photos />
-      case 'newAlbum':
-        return <EditAlbum onBack={() => setCurrentView("albums")} />
-      case 'newPhoto':
-        return <EditPhoto onBack={() => setCurrentView("photos")} />
-      default:
-        return <Albums />
-    };
-  };
+  // Estado para el modal de álbumes
+  const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
+  const [albumModalAction, setAlbumModalAction] = useState("create");
+  const [selectedAlbum, setSelectedAlbum] = useState(null);
+
+  // Estado para el modal de fotos
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [photoModalAction, setPhotoModalAction] = useState("create");
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  // Estado para el diálogo de confirmación de eliminación de foto
+  const [isPhotoConfirmDialogOpen, setIsPhotoConfirmDialogOpen] =
+    useState(false);
+
+  // Estado para el modal del carrusel de álbum
+  // const [isCarouselModalOpen, setIsCarouselModalOpen] = useState(false);
+  // const [carouselAlbum, setCarouselAlbum] = useState(null);
+
+  // Estado para el visor de fotos en fullscreen
+  // const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false);
+  // const [photoToView, setPhotoToView] = useState(null);
+
+  // useEffect para guardar en localStorage cuando cambian los datos
+  useEffect(() => {
+    saveToStorage("gallery-albums", albums);
+  }, [albums]);
+
+  useEffect(() => {
+    saveToStorage("gallery-photos", photos);
+  }, [photos]);
 
   const handleViewChange = (newView) => {
-    setCurrentView(newView);
-  }
+    // Si es una acción de crear/editar, abrir modal en lugar de cambiar vista
+    if (newView === "newAlbum") {
+      setAlbumModalAction("create");
+      setSelectedAlbum(null);
+      setIsAlbumModalOpen(true);
+    } else if (newView === "newPhoto") {
+      setPhotoModalAction("create");
+      setSelectedPhoto(null);
+      setIsPhotoModalOpen(true);
+    } else {
+      setCurrentView(newView);
+    }
+  };
+
+  // Funciones para manejar álbumes
+  const handleEditAlbum = (album) => {
+    setAlbumModalAction("edit");
+    setSelectedAlbum(album);
+    setIsAlbumModalOpen(true);
+  };
+
+  const handlePlayAlbum = (album) => { };
+
+  const handleCloseCarousel = () => { };
+
+  const handleDeleteAlbum = (album) => {
+    setAlbumToDelete(album);
+    setIsConfirmDialogOpen(true);
+  };
 
   const handleConfirmDeleteAlbum = () => {
     if (albumToDelete) {
-      const updatedAlbums = albums.filter((a) => a.id !== albumToDelete.id)
-      setAlbums(updatedAlbums)
-      console.log("Album eliminado:", albumToDelete);
-      console.log("ALbums restantes:", updatedAlbums.length);
+      // Solo eliminar el álbum del estado
+      // Las imágenes están contenidas dentro del álbum, no son entidades separadas
+      const updatedAlbums = albums.filter((a) => a.id !== albumToDelete.id);
+      setAlbums(updatedAlbums);
+
+      console.log(`Álbum "${albumToDelete.title}" eliminado exitosamente`);
+      console.log(`Número de álbumes restantes: ${updatedAlbums.length}`);
     }
+
+    // Limpiar estado
+    setIsConfirmDialogOpen(false);
+    setAlbumToDelete(null);
   };
 
   const handleCancelDeleteAlbum = () => {
@@ -66,48 +124,152 @@ function App() {
     setAlbumToDelete(null);
   };
 
+  // Funciones para manejar fotos
+  const handleViewPhoto = (photo) => { };
+
+  const handleClosePhotoViewer = () => { };
+
+  const handleSaveAlbum = (albumData) => { };
+
+  const handleCloseAlbumModal = () => {
+    setIsAlbumModalOpen(false);
+    setSelectedAlbum(null);
+  };
+
+  const handleEditPhoto = (photo) => { };
+
+  const handleSavePhoto = (photoData) => { };
+
+  const handleClosePhotoModal = () => { };
+
+  // Funciones para manejar eliminación de fotos
+  const handleDeletePhoto = (photo) => {
+    setPhotoToDelete(photo);
+    setIsPhotoConfirmDialogOpen(true);
+  };
+
   const handleConfirmDeletePhoto = () => {
     if (photoToDelete) {
-      const updatedPhotos = photos.filter((p) => p.id !== photoToDelete.id)
-      setPhotos(updatedPhotos)
-      console.log("Foto eliminada:", photoToDelete);
-      console.log("Fotos restantes:", updatedPhotos.length);
+      // Eliminar foto
+      setPhotos((prevPhotos) =>
+        prevPhotos.filter((p) => p.id !== photoToDelete.id)
+      );
+
+      console.log(`Foto "${photoToDelete.title}" eliminada exitosamente`);
     }
+
+    // Limpiar estado
+    setIsPhotoConfirmDialogOpen(false);
+    setPhotoToDelete(null);
   };
 
   const handleCancelDeletePhoto = () => {
-    setIsConfirmDialogOpen(false);
+    setIsPhotoConfirmDialogOpen(false);
     setPhotoToDelete(null);
+  };
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case "albums":
+        return (
+          <Albums
+            albums={albums}
+            onEditAlbum={handleEditAlbum}
+            onPlayAlbum={handlePlayAlbum}
+            onDeleteAlbum={handleDeleteAlbum}
+          />
+        );
+      case "photos":
+        return (
+          <Photos
+            photos={photos}
+            onEditPhoto={handleEditPhoto}
+            onDeletePhoto={handleDeletePhoto}
+            onViewPhoto={handleViewPhoto}
+          />
+        );
+      default:
+        return (
+          <Albums
+            albums={albums}
+            onEditAlbum={handleEditAlbum}
+            onPlayAlbum={handlePlayAlbum}
+            onDeleteAlbum={handleDeleteAlbum}
+          />
+        );
+    }
   };
 
   return (
 
     <div className="App" >
-      <Layout currentView={currentView} onViewChange={handleViewChange}>
+      <Layout currentView={currentView} onViewChange={handleViewChange} albums={albums}
+        photos={photos}>
         {renderCurrentView()}
       </Layout>
 
-      {/* Dialogo para confirmar eliminacion de Album */}
-      <ConfirmDialog isOpen={isConfirmDialogOpen}
-        type='danger'
-        title="Eliminar Album"
-        message={`¿Estás seguro que deseas eliminar el album?\n\nEstá acción no puede deshacerse.`}
+      {/* Modal de edición de álbum */}
+      <EditAlbum
+        isOpen={isAlbumModalOpen}
+        action={albumModalAction}
+        album={selectedAlbum}
+        onSaveAlbum={handleSaveAlbum}
+        onCancel={handleCloseAlbumModal}
+      />
+
+      {/* Modal de edición de foto */}
+      <EditPhoto
+        isOpen={isPhotoModalOpen}
+        action={photoModalAction}
+        photo={selectedPhoto}
+        onSavePhoto={handleSavePhoto}
+        onCancel={handleClosePhotoModal}
+      />
+
+      {/* Modal carrusel de álbum */}
+      {/* <AlbumCarousel
+        isOpen={isCarouselModalOpen}
+        album={carouselAlbum}
+        onClose={handleCloseCarousel}
+      /> */}
+
+      {/* Diálogo de confirmación para eliminar álbum */}
+      <ConfirmDialog
+        isOpen={isConfirmDialogOpen}
+        type="danger"
+        title="Eliminar álbum"
+        message={
+          albumToDelete
+            ? `¿Estás seguro de que quieres eliminar el álbum "${albumToDelete.title}"?\n\nEsta acción también eliminará todas las fotos asociadas y no se puede deshacer.`
+            : ""
+        }
         confirmText="Eliminar"
         cancelText="Cancelar"
         onConfirm={handleConfirmDeleteAlbum}
         onCancel={handleCancelDeleteAlbum}
-      ></ConfirmDialog>
+      />
 
-      {/* Dialogo para confirmar eliminacion de Foto */}
-      <ConfirmDialog isOpen={isConfirmDialogOpen}
-        type='danger'
-        title="Eliminar Foto"
-        message={`¿Estás seguro que deseas eliminar la foto?\n\nEstá acción no puede deshacerse.`}
+      {/* Diálogo de confirmación para eliminar foto */}
+      <ConfirmDialog
+        isOpen={isPhotoConfirmDialogOpen}
+        type="danger"
+        title="Eliminar foto"
+        message={
+          photoToDelete
+            ? `¿Estás seguro de que quieres eliminar la foto "${photoToDelete.title}"?\n\nEsta acción no se puede deshacer.`
+            : ""
+        }
         confirmText="Eliminar"
         cancelText="Cancelar"
         onConfirm={handleConfirmDeletePhoto}
         onCancel={handleCancelDeletePhoto}
-      ></ConfirmDialog>
+      />
+
+      {/* Visor de fotos en fullscreen */}
+      {/* <PhotoViewer
+        isOpen={isPhotoViewerOpen}
+        photo={photoToView}
+        onClose={handleClosePhotoViewer}
+      /> */}
     </div>
   );
 }

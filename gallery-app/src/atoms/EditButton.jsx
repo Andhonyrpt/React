@@ -1,23 +1,27 @@
 import PropTypes from "prop-types";
-import { BUTTON_SIZES } from '../utils/constants';
+import { BUTTON_SIZES } from "../utils/constants";
 import Button from "./Button";
 
-export default function DeleteButton({ onClick, disabled, size = BUTTON_SIZES.MEDIUM, children }) {
+export default function EditButton({
+  onClick,
+  disabled = false,
+  size = BUTTON_SIZES.MEDIUM,
+  children,
+}) {
   return (
     <Button
-      type="button"
       onClick={onClick}
       disabled={disabled}
       size={size}
-      variant="delete"
-      ariaLabel="Delete item"
+      variant="edit"
+      ariaLabel="Edit item"
     >
-      {children || (<span className="btn-icon">🗑</span>)}
-    </Button>);
-  /* .btn--sm .btn--md*/
+      {children || <span className="btn-icon">✏️</span>}
+    </Button>
+  );
 }
 
-DeleteButton.propTypes = {
+EditButton.propTypes = {
   onClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   size: PropTypes.oneOf([

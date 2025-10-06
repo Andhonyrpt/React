@@ -112,4 +112,43 @@
     --transition-fast: 0.15s ease;
     --transition-normal: 0.3s ease;
     --transition-slow: 0.45s ease;
+
+    /* Grid System */
+    --grid-gap-sm: var(--spacing-sm);
+    --grid-gap-md: var(--spacing-md);
+    --grid-gap-lg: var(--spacing-lg);
+    --grid-columns-mobile: 2;
+    --grid-columns-tablet: 4;
+    --grid-columns-desktop: 6;
+    --grid-albums-desktop: 2;
+    --grid-max-preview: 4;
+
+    /* Component Specific */
+    --album-card-height: 280px;
+    --photo-card-height: 200px;
+    --button-height-sm: 32px;
+    --button-height-md: 40px;
+    --button-height-lg: 48px;
+
+    /* Status Colors */
+    --status-active: var(--primary-color);
+    --status-inactive: var(--neutral-400);
+    --status-hover: var(--primary-hover);
+
+    /* Interactive States */
+    --hover-scale: 1.02;
+    --active-scale: 0.98;
+    --disabled-opacity: 0.5;
+
+    /* Z-index layers */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-modal: 1030;
+    --z-tooltip: 1040;
+
+    /* Form Elements */
+    --input-height: var(--button-height-md);
+    --input-padding: var(--spacing-sm) var(--spacing-md);
+    --input-border: var(--border-width) solid var(--border-color);
+    --input-border-focus: var(--border-width-thick) solid var(--primary-color);
 }

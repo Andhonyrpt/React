@@ -1,33 +1,32 @@
 // Vistas de la aplicación
 export const VIEWS = {
-  ALBUMS: 'albums',
-  PHOTOS: 'photos',
-  NEW_ALBUM: 'newAlbum',
-  NEW_PHOTO: 'newPhoto',
-  EDIT_ALBUM: 'editAlbum',
-  EDIT_PHOTO: 'editPhoto'
+  ALBUMS: "albums",
+  PHOTOS: "photos",
+  NEW_ALBUM: "newAlbum",
+  NEW_PHOTO: "newPhoto",
+  EDIT_ALBUM: "editAlbum",
+  EDIT_PHOTO: "editPhoto",
+  ALBUM_CAROUSEL: "albumCarousel",
+  PHOTO_VIEWER: "photoViewer",
+};
+
+// Configuración de almacenamiento
+export const STORAGE_KEYS = {
+  ALBUMS: "gallery-albums",
+  PHOTOS: "gallery-photos",
 };
 
 // Tamaños de botones
 export const BUTTON_SIZES = {
-  SMALL: 'small',
-  MEDIUM: 'medium',
-  LARGE: 'large'
+  SMALL: "sm",
+  MEDIUM: "md",
+  LARGE: "lg",
 };
 
-// Configuración de grids
-export const GRID_CONFIG = {
-  ALBUMS_DESKTOP: 2,
-  PHOTOS_DESKTOP: 6,
-  PHOTOS_TABLET: 4,
-  PHOTOS_MOBILE: 2,
-  MAX_PREVIEW_IMAGES: 4
-};
-
-// Breakpoints
-export const BREAKPOINTS = {
-  MOBILE: 480,
-  TABLET: 768,
-  DESKTOP: 1024,
-  LARGE: 1200
+// Tags básicos
+export const COMMON_TAGS = {
+  NATURE: ["nature", "landscape", "forest", "mountains"],
+  URBAN: ["urban", "city", "street", "architecture"],
+  LIFESTYLE: ["lifestyle", "home", "work", "coffee"],
+  TRAVEL: ["travel", "road", "adventure", "journey"],
 };
