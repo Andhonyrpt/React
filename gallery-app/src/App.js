@@ -1,4 +1,4 @@
-import { useState,  } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 import Layout from './layout/Layout';
 import Albums from './pages/albums';
