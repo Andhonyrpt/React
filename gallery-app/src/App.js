@@ -1,22 +1,18 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import Layout from './layout/Layout';
-import Albums from './pages/albums';
-import Photos from './pages/Photos';
-import EditAlbum from './pages/EditAlbum';
-import EditPhoto from './pages/EditPhoto';
-import ConfirmDialog from './molecules/ConfirmDialog';
 import albumsCollection from './data/albums';
 import photosCollection from './data/photos';
+import Layout from './layout/Layout';
+import ConfirmDialog from './molecules/ConfirmDialog';
+import AlbumCarousel from './pages/AlbumCarousel';
+import Albums from './pages/albums';
+import EditAlbum from './pages/EditAlbum';
+import Photos from './pages/Photos';
+import EditPhoto from './pages/EditPhoto';
+
 
 
 function App() {
-
-  const [currentView, setCurrentView] = useState('albums');
-  // Estado para el diálogo de confirmación de eliminación de álbum
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const [albumToDelete, setAlbumToDelete] = useState(null);
-  const [photoToDelete, setPhotoToDelete] = useState(null);
 
   // Función para obtener datos del localStorage
   const getFromStorage = (key, defaultValue) => {
@@ -37,6 +33,8 @@ function App() {
     }
   };
 
+  const [currentView, setCurrentView] = useState('albums');
+
   // Estado para persistencia de datos
   const [albums, setAlbums] = useState(() => getFromStorage("gallery-albums", albumsCollection));
   const [photos, setPhotos] = useState(() => getFromStorage("gallery-photos", photosCollection));
@@ -51,13 +49,17 @@ function App() {
   const [photoModalAction, setPhotoModalAction] = useState("create");
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+  // Estado para el diálogo de confirmación de eliminación de álbum
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
+  const [albumToDelete, setAlbumToDelete] = useState(null);
+
   // Estado para el diálogo de confirmación de eliminación de foto
-  const [isPhotoConfirmDialogOpen, setIsPhotoConfirmDialogOpen] =
-    useState(false);
+  const [isPhotoConfirmDialogOpen, setIsPhotoConfirmDialogOpen] = useState(false);
+  const [photoToDelete, setPhotoToDelete] = useState(null);
 
   // Estado para el modal del carrusel de álbum
-  // const [isCarouselModalOpen, setIsCarouselModalOpen] = useState(false);
-  // const [carouselAlbum, setCarouselAlbum] = useState(null);
+  const [isCarouselModalOpen, setIsCarouselModalOpen] = useState(false);
+  const [carouselAlbum, setCarouselAlbum] = useState(null);
 
   // Estado para el visor de fotos en fullscreen
   // const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false);
@@ -94,9 +96,19 @@ function App() {
     setIsAlbumModalOpen(true);
   };
 
-  const handlePlayAlbum = (album) => { };
+  const handlePlayAlbum = (album) => {
+    console.log("✅ Abriendo carrusel para el álbum:", album.title);
 
-  const handleCloseCarousel = () => { };
+    // 💡 NUEVO LOG DE DEPURACIÓN
+    console.log("Estructura del Álbum:", album);
+    setCarouselAlbum(album);
+    setIsCarouselModalOpen(true);
+  };
+
+  const handleCloseCarousel = () => {
+    setCarouselAlbum(null);
+    setIsCarouselModalOpen(false);
+  };
 
   const handleDeleteAlbum = (album) => {
     setAlbumToDelete(album);
@@ -154,10 +166,8 @@ function App() {
       setPhotos((prevPhotos) =>
         prevPhotos.filter((p) => p.id !== photoToDelete.id)
       );
-
       console.log(`Foto "${photoToDelete.title}" eliminada exitosamente`);
     }
-
     // Limpiar estado
     setIsPhotoConfirmDialogOpen(false);
     setPhotoToDelete(null);
@@ -167,6 +177,7 @@ function App() {
     setIsPhotoConfirmDialogOpen(false);
     setPhotoToDelete(null);
   };
+
   const renderCurrentView = () => {
     switch (currentView) {
       case "albums":
@@ -202,8 +213,12 @@ function App() {
   return (
 
     <div className="App" >
-      <Layout currentView={currentView} onViewChange={handleViewChange} albums={albums}
-        photos={photos}>
+      <Layout
+        currentView={currentView}
+        onViewChange={handleViewChange}
+        albums={albums}
+        photos={photos}
+      >
         {renderCurrentView()}
       </Layout>
 
@@ -226,11 +241,11 @@ function App() {
       />
 
       {/* Modal carrusel de álbum */}
-      {/* <AlbumCarousel
+      <AlbumCarousel
         isOpen={isCarouselModalOpen}
         album={carouselAlbum}
         onClose={handleCloseCarousel}
-      /> */}
+      />
 
       {/* Diálogo de confirmación para eliminar álbum */}
       <ConfirmDialog

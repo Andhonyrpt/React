@@ -5,7 +5,7 @@ import "./Pages.css";
 export default function Albums({ albums, onEditAlbum, onPlayAlbum, onDeleteAlbum }) {
 
     const handlePlayAlbum = (album) => {
-        console.log('Playing album:', album.title);
+        // console.log('Playing album:', album.title);
         // Funcionalidad de reproducir álbum
         onPlayAlbum?.(album);
     };

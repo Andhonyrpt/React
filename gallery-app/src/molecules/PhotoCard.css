@@ -5,7 +5,7 @@
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.3s ease;
-    aspect-ratio: 1;
+    aspect-ratio: 0.8;
 }
 
 .photo-card:hover {
