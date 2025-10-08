@@ -5,6 +5,7 @@ import photosCollection from './data/photos';
 import Layout from './layout/Layout';
 import ConfirmDialog from './molecules/ConfirmDialog';
 import AlbumCarousel from './pages/AlbumCarousel';
+import PhotoViewer from './pages/PhotoViewer';
 import Albums from './pages/albums';
 import EditAlbum from './pages/EditAlbum';
 import Photos from './pages/Photos';
@@ -62,8 +63,8 @@ function App() {
   const [carouselAlbum, setCarouselAlbum] = useState(null);
 
   // Estado para el visor de fotos en fullscreen
-  // const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false);
-  // const [photoToView, setPhotoToView] = useState(null);
+  const [isPhotoViewerOpen, setIsPhotoViewerOpen] = useState(false);
+  const [photoToView, setPhotoToView] = useState(null);
 
   // useEffect para guardar en localStorage cuando cambian los datos
   useEffect(() => {
@@ -137,9 +138,18 @@ function App() {
   };
 
   // Funciones para manejar fotos
-  const handleViewPhoto = (photo) => { };
+  const handleViewPhoto = (photo) => {
 
-  const handleClosePhotoViewer = () => { };
+    console.log("Abriendo PhotoViewer para:", photo.title);
+
+    setPhotoToView(photo);
+    setIsPhotoViewerOpen(true);
+  };
+
+  const handleClosePhotoViewer = () => {
+    setPhotoToView(null);
+    setIsPhotoViewerOpen(false);
+  };
 
   const handleSaveAlbum = (albumData) => { };
 
@@ -280,11 +290,11 @@ function App() {
       />
 
       {/* Visor de fotos en fullscreen */}
-      {/* <PhotoViewer
+      <PhotoViewer
         isOpen={isPhotoViewerOpen}
         photo={photoToView}
         onClose={handleClosePhotoViewer}
-      /> */}
+      />
     </div>
   );
 }
