@@ -72,7 +72,6 @@ export default function PhotoViewer({ isOpen, photo, onClose }) {
                 {/* Área principal de la imagen */}
                 <div
                     className="photoviewer-main"
-
                     onWheel={handleScroll}
                     style={{ overflow: 'hidden' }}
                 >
