@@ -63,8 +63,8 @@ export default function ConfirmDialog({ isOpen, title, message, confirmText = "C
 ConfirmDialog.propTypes = {
     title: PropTypes.string.isRequired,
     message: PropTypes.string.isRequired,
-    confirmText: PropTypes.string.isRequired,
-    cancelText: PropTypes.string.isRequired,
+    confirmText: PropTypes.string,
+    cancelText: PropTypes.string,
     onConfirm: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     isOpen: PropTypes.bool.isRequired,

@@ -10,7 +10,8 @@ import Albums from './pages/albums';
 import EditAlbum from './pages/EditAlbum';
 import Photos from './pages/Photos';
 import EditPhoto from './pages/EditPhoto';
-
+import { STORAGE_KEYS, VIEWS } from "./utils/constants";
+import { getFromStorage, saveToStorage } from "./utils/localStorage";
 
 
 function App() {
@@ -34,11 +35,11 @@ function App() {
     }
   };
 
-  const [currentView, setCurrentView] = useState('albums');
+  const [currentView, setCurrentView] = useState(VIEWS.ALBUMS);
 
   // Estado para persistencia de datos
-  const [albums, setAlbums] = useState(() => getFromStorage("gallery-albums", albumsCollection));
-  const [photos, setPhotos] = useState(() => getFromStorage("gallery-photos", photosCollection));
+  const [albums, setAlbums] = useState(() => getFromStorage(STORAGE_KEYS.ALBUMS, albumsCollection));
+  const [photos, setPhotos] = useState(() => getFromStorage(STORAGE_KEYS.PHOTOS, photosCollection));
 
   // Estado para el modal de álbumes
   const [isAlbumModalOpen, setIsAlbumModalOpen] = useState(false);
@@ -68,20 +69,20 @@ function App() {
 
   // useEffect para guardar en localStorage cuando cambian los datos
   useEffect(() => {
-    saveToStorage("gallery-albums", albums);
+    saveToStorage(STORAGE_KEYS.ALBUMS, albums);
   }, [albums]);
 
   useEffect(() => {
-    saveToStorage("gallery-photos", photos);
+    saveToStorage(STORAGE_KEYS.PHOTOS, photos);
   }, [photos]);
 
   const handleViewChange = (newView) => {
     // Si es una acción de crear/editar, abrir modal en lugar de cambiar vista
-    if (newView === "newAlbum") {
+    if (newView === VIEWS.NEW_ALBUM) {
       setAlbumModalAction("create");
       setSelectedAlbum(null);
       setIsAlbumModalOpen(true);
-    } else if (newView === "newPhoto") {
+    } else if (newView === VIEWS.NEW_PHOTO) {
       setPhotoModalAction("create");
       setSelectedPhoto(null);
       setIsPhotoModalOpen(true);
@@ -151,18 +152,65 @@ function App() {
     setIsPhotoViewerOpen(false);
   };
 
-  const handleSaveAlbum = (albumData) => { };
+  const handleSaveAlbum = (albumData) => {
+    if (albumModalAction === "create") {
+      // Crear nuevo álbum
+      const newAlbum = {
+        ...albumData,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      };
+      setAlbums((prevAlbums) => [...prevAlbums, newAlbum]);
+    } else {
+      // Editar álbum existente
+      setAlbums((prevAlbums) =>
+        prevAlbums.map((album) =>
+          album.id === selectedAlbum.id
+            ? { ...album, ...albumData, updatedAt: new Date().toISOString() }
+            : album
+        )
+      );
+    }
+    setIsAlbumModalOpen(false);
+  };
 
   const handleCloseAlbumModal = () => {
     setIsAlbumModalOpen(false);
     setSelectedAlbum(null);
   };
 
-  const handleEditPhoto = (photo) => { };
+  const handleEditPhoto = (photo) => {
+    setPhotoModalAction("edit");
+    setSelectedPhoto(photo);
+    setIsPhotoModalOpen(true);
+  };
 
-  const handleSavePhoto = (photoData) => { };
+  const handleSavePhoto = (photoData) => {
+    if (photoModalAction === "create") {
+      // Crear nueva foto
+      const newPhoto = {
+        ...photoData,
+        id: Date.now(),
+        createdAt: new Date().toISOString(),
+      };
+      setPhotos((prevPhotos) => [...prevPhotos, newPhoto]);
+    } else {
+      // Editar foto existente
+      setPhotos((prevPhotos) =>
+        prevPhotos.map((photo) =>
+          photo.id === selectedPhoto.id
+            ? { ...photo, ...photoData, updatedAt: new Date().toISOString() }
+            : photo
+        )
+      );
+    }
+    setIsPhotoModalOpen(false);
+  };
 
-  const handleClosePhotoModal = () => { };
+  const handleClosePhotoModal = () => {
+    setIsPhotoModalOpen(false);
+    setSelectedPhoto(null);
+  };
 
   // Funciones para manejar eliminación de fotos
   const handleDeletePhoto = (photo) => {
@@ -190,7 +238,7 @@ function App() {
 
   const renderCurrentView = () => {
     switch (currentView) {
-      case "albums":
+      case VIEWS.ALBUMS:
         return (
           <Albums
             albums={albums}
@@ -199,7 +247,7 @@ function App() {
             onDeleteAlbum={handleDeleteAlbum}
           />
         );
-      case "photos":
+      case VIEWS.PHOTOS:
         return (
           <Photos
             photos={photos}

@@ -27,6 +27,30 @@ export default function AlbumCarousel({ isOpen, album, onClose }) {
         setCurrentImageIndex(index);
     };
 
+    // Manejar teclas de navegación
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!isOpen || !album?.images?.length) return;
+
+            switch (e.key) {
+                case "Escape":
+                    onClose();
+                    break;
+                case "ArrowLeft":
+                    goToPrevious();
+                    break;
+                case "ArrowRight":
+                    goToNext();
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        return () => document.removeEventListener("keydown", handleKeyDown);
+    }, [isOpen, onClose, goToNext, goToPrevious]);
+
     if (!isOpen || !album || !album.images || album.images.length === 0) {
         return null;
     }
@@ -35,7 +59,7 @@ export default function AlbumCarousel({ isOpen, album, onClose }) {
 
     return (
         <div className='carousel-modal-overlay' onClick={onClose}>
-            <div className='carousel-modal'>
+            <div className='carousel-modal' onClick={(e) => e.stopPropagation()}>
 
                 {/* Header del modal */}
                 <div className='carousel-header'>
@@ -61,11 +85,13 @@ export default function AlbumCarousel({ isOpen, album, onClose }) {
                     <Button className='carousel-nav-button carousel-nav-button__prev'
                         onClick={goToPrevious}
                         variant='secondary'
-                        size={BUTTON_SIZES.MEDIUM}
+                        disabled={album.images.length <= 1}
+                        size={BUTTON_SIZES.LARGE}
                         ariaLabel="Imagen Anterior"
                     >
-                        {" "}‹{" "}
+                        ‹
                     </Button>
+
                     <div className='carousel-image-container'>
                         <img
                             src={currentImage.url}
@@ -77,35 +103,41 @@ export default function AlbumCarousel({ isOpen, album, onClose }) {
                             <p className='carousel-image-counter'>{currentImageIndex + 1} de {album.images.length}</p>
                         </div>
                     </div>
+
                     <Button
                         className='carousel-nav-button carousel-nav-button__next'
                         onClick={goToNext}
                         variant='secondary'
-                        size={BUTTON_SIZES.MEDIUM}
+                        disabled={album.images.length <= 1}
+                        size={BUTTON_SIZES.LARGE}
                         ariaLabel="Imagen Siguiente"
                     >
-                        {" "}›{" "} </Button>
-
-                    {/* Thumbnails */}
-                    {album?.images?.length > 1 && (
-                        <div className='carousel-thumbnails'>
-                            <div className='carousel-thumbnails-container'>
-                                {album.images.map((image, index) => (
-                                    <Button
-                                        key={index}
-                                        className={`carousel-thumbnail ${index === currentImageIndex ? "carousel-thumbnail__active" : ""}`}
-                                        onClick={() => goToImage(index)}>
-                                        <img
-                                            className='carousel-thumbnail-image'
-                                            src={image.url}
-                                            alt={image.name}
-                                        />
-                                    </Button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                        › </Button>
                 </div>
+
+                {/* Thumbnails */}
+                {album?.images?.length > 1 && (
+                    <div className='carousel-thumbnails'>
+                        <div className='carousel-thumbnails-container'>
+                            {album.images.map((image, index) => (
+                                <Button
+                                    key={index}
+                                    className={`carousel-thumbnail ${index === currentImageIndex ? "carousel-thumbnail__active" : ""}`}
+                                    onClick={() => goToImage(index)}
+                                    variant='ghost'
+                                    size={BUTTON_SIZES.SMALL}
+                                    ariaLabel={image.name || `Imagen ${index + 1}`}
+                                >
+                                    <img
+                                        className='carousel-thumbnail-image'
+                                        src={image.url}
+                                        alt={image.name || `Thumbnail ${index + 1}`}
+                                    />
+                                </Button>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div >
     );
@@ -114,9 +146,9 @@ export default function AlbumCarousel({ isOpen, album, onClose }) {
 AlbumCarousel.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     album: PropTypes.shape({
-        id: PropTypes.number.isRequired,
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         title: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired,
+        description: PropTypes.string,
         images: PropTypes.arrayOf(
             PropTypes.shape({
                 url: PropTypes.string.isRequired,

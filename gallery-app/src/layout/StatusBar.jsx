@@ -1,23 +1,22 @@
 import PropTypes from 'prop-types';
-import albumsCollection from '../data/albums';
-import photosCollection from '../data/photos';
-import { VIEWS } from '../utils/constants';
+import Button from '../atoms/Button';
+import { BUTTON_SIZES, VIEWS } from '../utils/constants';
 import './StatusBar.css';
 
-export default function StatusBar({ currentView, onViewChange }) {
+export default function StatusBar({ currentView, onViewChange, albums = [], photos = [] }) {
 
   const getStatusInfo = () => {
     switch (currentView) {
       case VIEWS.PHOTOS:
         return {
-          count: photosCollection.length,
+          count: photos.length,
           label: 'Photos Total',
           canAdd: true,
           addAction: VIEWS.NEW_PHOTO
         };
       case VIEWS.ALBUMS:
         return {
-          count: albumsCollection.length,
+          count: albums.length,
           label: 'Albums Total',
           canAdd: true,
           addAction: VIEWS.NEW_ALBUM
@@ -57,14 +56,15 @@ export default function StatusBar({ currentView, onViewChange }) {
       </div>
 
       {statusInfo.canAdd && (
-        <button
+        <Button
           type="button"
-          className="btn btn--add btn--medium"
+          variant='primary'
+          size={BUTTON_SIZES.MEDIUM}
           onClick={() => onViewChange(statusInfo.addAction)}
           aria-label={`Add new ${statusInfo.addAction.replace('new', '').toLowerCase()}`}
         >
           <span className="btn-icon">+</span>
-        </button>
+        </Button>
       )}
     </div>
   );
@@ -72,5 +72,7 @@ export default function StatusBar({ currentView, onViewChange }) {
 
 StatusBar.propTypes = {
   currentView: PropTypes.string.isRequired,
-  onViewChange: PropTypes.func.isRequired
+  onViewChange: PropTypes.func.isRequired,
+  albums: PropTypes.array,
+  photos: PropTypes.array
 };

@@ -74,5 +74,7 @@ PhotoCard.propTypes = {
         location: PropTypes.string,
         tags: PropTypes.arrayOf(PropTypes.string)
     }),
-    onDelete: PropTypes.func
+    onDelete: PropTypes.func,
+    onEdit: PropTypes.func,
+    onClick: PropTypes.func
 };
