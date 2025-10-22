@@ -1,15 +1,19 @@
-import React, { useState, useEffect, useRef, use } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import "./Header.css"
 import Icon from "../../components/common/Icon";
 import Navigation from "../Navigation/Navigation";
-
+import { useTheme } from "../../context/ThemeContext";
+import { useCart } from "../../context/CartContext";
 
 export default function Header() {
     const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
-    const [isDarkMode, setIsDarkMode] = useState(false);
+    const { isDarkMode, toggleTheme } = useTheme();
+    const { getTotalItems } = useCart();
+    const totalItems = getTotalItems();
 
     // Simular estado de autenticación - reemplazar con tu lógica real
     const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -79,14 +83,6 @@ export default function Header() {
             console.log("Buscando", searchQuery);
             setIsMobileSearchOpen(false);
         }
-    };
-
-    const toggleTheme = () => {
-        setIsDarkMode(!isDarkMode);
-        document.documentElement.setAttribute(
-            "data-theme",
-            isDarkMode ? "light" : "dark"
-        );
     };
 
     const handleLogin = () => {
@@ -172,7 +168,7 @@ export default function Header() {
 
             {/* Main Header */}
             <div className="header-main">
-                <div className="container ">
+                <div className="container">
                     <div className="header-content">
                         {/* Mobile Menu Button */}
                         <button className="mobile-menu-btn mobile-only"
@@ -182,10 +178,10 @@ export default function Header() {
                             <Icon name="menu" size={20} />
                         </button>
                         {/* LOGO  https://heroicons*/}
-                        <a href="/" className="logo">
+                        <Link to="/" className="logo">
                             playerasla10
                             <span className="logo-extensions">.com</span>
-                        </a>
+                        </Link>
 
                         {/* Desktop Search */}
                         <div className="search-container desktop-only">
@@ -297,29 +293,30 @@ export default function Header() {
                                                         <span className="user-email">{user?.email}</span>
                                                     </div>
                                                 </div>
+
                                                 <div className="user-links">
-                                                    <a href="/mi-cuenta" className="user-link"
+                                                    <Link to="/mi-cuenta" className="user-link"
                                                     >
                                                         <Icon name="user" size={16} />
                                                         Mi Cuenta
-                                                    </a>
-                                                    <a href="/mis-pedidos" className="user-link"
+                                                    </Link>
+                                                    <Link to="/mis-pedidos" className="user-link"
                                                     >
                                                         <Icon name="package" size={16} />
                                                         Mis Pedidos
-                                                    </a>
-                                                    <a href="/lista-deseos"
+                                                    </Link>
+                                                    <Link to="/lista-deseos"
                                                         className="user-link"
                                                     >
                                                         <Icon name="heart" size={16} />
                                                         Lista de Deseos
-                                                    </a>
-                                                    <a href="/configuracion"
+                                                    </Link>
+                                                    <Link to="/configuracion"
                                                         className="user-link"
                                                     >
                                                         <Icon name="settings" size={16} />
                                                         Configuración
-                                                    </a>
+                                                    </Link>
                                                 </div>
 
                                                 <div className="logout-section">
@@ -337,20 +334,21 @@ export default function Header() {
                             </div>
 
                             {/* Cart Button */}
-                            <a
-                                href="/carrito"
+                            <Link
+                                to="/cart"
                                 className="cart-btn"
                                 aria-label="Ver carrito de compras"
                             >
                                 <Icon name="shoppingCart" size={24} />
-                                <span className="cart-badge">2</span>
-                            </a>
+                                <span className="cart-badge">{totalItems}</span>
+                            </Link>
 
                             {/* Desktop Theme Toggle */}
                             <button
                                 className="theme-btn desktop-only"
-                                aria-label="Cambiar tema"
                                 onClick={toggleTheme}
+                                aria-pressed={isDarkMode}
+                                aria-label="Cambiar tema"
                             >
                                 <Icon name={isDarkMode ? "sun" : "moon"} size={18} />
                             </button>
@@ -446,38 +444,38 @@ export default function Header() {
                             {isAuthenticated && (
                                 <nav className="mobile-main-nav">
                                     <h4>Mi Cuenta</h4>
-                                    <a
-                                        href="/mi-cuenta"
+                                    <Link
+                                        to="/mi-cuenta"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
                                         <Icon name="user" size={20} />
                                         Mi Perfil
-                                    </a>
-                                    <a
-                                        href="/mis-pedidos"
+                                    </Link>
+                                    <Link
+                                        to="/mis-pedidos"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
                                         <Icon name="package" size={20} />
                                         Mis Pedidos
-                                    </a>
-                                    <a
-                                        href="/lista-deseos"
+                                    </Link>
+                                    <Link
+                                        to="/lista-deseos"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
                                         <Icon name="heart" size={20} />
                                         Lista de Deseos
-                                    </a>
-                                    <a
-                                        href="/configuracion"
+                                    </Link>
+                                    <Link
+                                        to="/configuracion"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
                                         <Icon name="settings" size={20} />
                                         Configuración
-                                    </a>
+                                    </Link>
                                 </nav>
                             )}
 
@@ -488,22 +486,22 @@ export default function Header() {
                                     <Icon name={isDarkMode ? "sun" : "moon"} size={20} />
                                     <span>{isDarkMode ? "Modo Claro" : "Modo Oscuro"}</span>
                                 </button>
-                                <a
-                                    href="/ayuda"
+                                <Link
+                                    to="/ayuda"
                                     className="mobile-nav-link"
                                     onClick={handleMobileMenuClose}
                                 >
                                     <Icon name="helpCircle" size={20} />
                                     Centro de Ayuda
-                                </a>
-                                <a
-                                    href="/contacto"
+                                </Link>
+                                <Link
+                                    to="/contacto"
                                     className="mobile-nav-link"
                                     onClick={handleMobileMenuClose}
                                 >
                                     <Icon name="messageCircle" size={20} />
                                     Contactar Soporte
-                                </a>
+                                </Link>
                             </nav>
 
                             {/* Logout */}
