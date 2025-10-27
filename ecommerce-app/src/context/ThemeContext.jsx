@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 const ThemeContext = createContext(null);
 const THEME_STORAGE_KEY = 'app:theme';
@@ -45,7 +45,7 @@ export function ThemeProvider({ children }) {
             setTheme(newTheme);
         };
         return { theme, isDarkMode, toggleTheme, setTheme };
-        
+
     }, [theme]);
 
     return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
