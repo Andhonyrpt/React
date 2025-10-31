@@ -307,7 +307,7 @@ export default function Header() {
                                                 </div>
 
                                                 <div className="user-links">
-                                                    <Link to="/mi-cuenta" className="user-link"
+                                                    <Link to="/profile" className="user-link"
                                                     >
                                                         <Icon name="user" size={16} />
                                                         Mi Cuenta
@@ -353,6 +353,9 @@ export default function Header() {
                             >
                                 <Icon name="shoppingCart" size={24} />
                                 <span className="cart-badge">{totalItems}</span>
+                                {/* {totalItems > 0 && (
+                                    <span className="cart-badge">{totalItems}</span>
+                                )} */}
                             </Link>
 
                             {/* Desktop Theme Toggle */}
@@ -457,7 +460,7 @@ export default function Header() {
                                 <nav className="mobile-main-nav">
                                     <h4>Mi Cuenta</h4>
                                     <Link
-                                        to="/mi-cuenta"
+                                        to="/profile"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >

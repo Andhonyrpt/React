@@ -1,22 +1,27 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BannerCarousel from '../components/BannerCarousel/BannerCarousel';
 import homeImages from '../data/homeImages';
-import ProductCard from "../components/ProductCard/ProductCard";
 import { fetchProducts } from "../services/productService";
+import Loading from "../components/common/Loading/Loading";
+import ErrorMessage from "../components/common/ErrorMessage/ErrorMessage";
+import List from "../components/List/List";
 
 export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
 
     useEffect(() => {
         const loadProducts = async () => {
             try {
                 setLoading(true);
+                setError(null);
                 const productData = await fetchProducts();
                 setProducts(productData);
             } catch (error) {
-                console.log(error);
+                setError("No se pudieron cargar los productos. Intenta mas tarde")
+                setLoading([]);
             } finally {
                 setLoading(false);
             }
@@ -30,23 +35,18 @@ export default function Home() {
         <div>
             <BannerCarousel banners={homeImages} />
             {loading ?
-                <div style={{
-                    textAlign: "center",
-                    padding: "2rem",
-                    background: "var(--surface)",
-                    borderRadius: "18px",
-                    border: "1px solid var(--border)",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                    alignItems: "center"
-                }}>Cargando Productos...</div> :
-                products && products.length > 0 ? (<div className="grid grid-3">
-                    {products.map((product) => {
-                        return <ProductCard key={product._id}
-                            product={product} />
-                    })}
-                </div>) :
-                    (<div>No hay productos en el catálogo</div>)}
-        </div>);
+                <Loading>Cargando Productos...</Loading>
+                : error ? (
+                    <ErrorMessage>{error}</ErrorMessage>
+                ) : products.length > 0 ? (
+                    <List
+                        title="Productos recomendados"
+                        products={products}
+                        layout="grid"></List>
+                ) : (
+                    <ErrorMessage>No hay productos en el catálogo</ErrorMessage>
+                )
+            }
+        </div>
+    );
 };
