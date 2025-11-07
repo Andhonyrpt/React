@@ -21,7 +21,7 @@ export default function Profile() {
                     </div>
                     <div className="info-item">
                         <label htmlFor="">Rol:</label>
-                        <span className={`rol-badge ${user.rol}`}>{user.rol}</span>
+                        <span className={`rol-badge ${user.role}`}>{user.role}</span>
                     </div>
                     <div className="info-item">
                         <label htmlFor="">Última conexión:</label>

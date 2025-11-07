@@ -1,7 +1,20 @@
-import { isAuthenticated } from "../utils/auth";
 import { Navigate } from "react-router-dom";
+import { isAuthenticated, getCurrentUser } from "../utils/auth";
+import ErrorMessage from "../components/common/ErrorMessage/ErrorMessage";
 
-export default function ProtectedRoute({ children }) {
+export default function ProtectedRoute({ children, redirectTo = "/login", allowedRoles }) {
 
-    return isAuthenticated() ? children : <Navigate to="/login" />
+    if (!isAuthenticated()) {
+        return <Navigate to={redirectTo} />
+    }
+
+    if (allowedRoles) {
+        const user = getCurrentUser();
+
+        if (allowedRoles.includes(user.role)) {
+            return <ErrorMessage>Acceso denegado</ErrorMessage>
+        }
+    }
+
+    return children;
 };

@@ -7,6 +7,11 @@ import Login from "../../pages/Login";
 import Product from "../../pages/Product";
 import Profile from '../../pages/Profile';
 import ProtectedRoute from "../../pages/ProtectedRoute";
+import SearchResults from "../../pages/SearchResults";
+import CategoryPage from '../../pages/CategoryPage';
+import PurchaseOrder from "../../pages/PurchaseOrder";
+import WishList from "../../pages/WishList";
+import Settings from "../../pages/Settings";
 
 function App() {
   return (
@@ -17,14 +22,37 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/search" element={<SearchResults />} />
+            <Route path="/product/:productId" element={<Product />} />
+            <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/profile"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute redirectTo="/login" allowedRoles={["admin", "customer", "Cliente"]}>
                   <Profile />
                 </ProtectedRoute>
               }
             />
-            <Route path="/product/:productId" element={<Product />} />
+            <Route path="/orders"
+              element={
+                <ProtectedRoute>
+                  <PurchaseOrder></PurchaseOrder>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/wishlist"
+              element={
+                <ProtectedRoute>
+                  <WishList></WishList>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/settings"
+              element={
+                <ProtectedRoute>
+                  <Settings></Settings>
+                </ProtectedRoute>
+              }
+            />
             <Route path="*" element={<div>Ruta no encontrada</div>} />
           </Routes>
         </Layout>

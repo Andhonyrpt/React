@@ -68,7 +68,7 @@ export default function Login() {
                         {loading ? "Iniciando sesión..." : "Iniciar Sesión"}
                     </Button>
                 </form>
-                
+
                 <div className="login-footer">
                     <Link to="/">Volver al inicio</Link>
                 </div>

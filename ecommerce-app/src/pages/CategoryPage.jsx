@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Breadcrumb from "../layout/Breadcrumb/Breadcrumb";
 import ProductCard from "../components/ProductCard";
 import Input from "../components/common/Input";

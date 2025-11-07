@@ -1,19 +1,20 @@
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
 import Icon from "../components/common/Icon";
 import './Cart.css';
+import CartView from "../components/Cart/CartView";
 
 export default function Cart() {
 
     const {
         cartItems,
-        // addToCart,
-        removeFromCart,
-        updateQuantity,
         clearCart,
         getTotalItems,
         getTotalPrice
     } = useCart();
+
+    const navigate = useNavigate();
 
     if (cartItems.length === 0) {
         return (
@@ -37,52 +38,18 @@ export default function Cart() {
             </div>
 
             <div className="cart-items">
-                {cartItems.map((item) => (
-                    <div className="cart-item" key={item._id}>
+                <CartView />
 
-                        <div className="cart-item-image">
-                            <img src={item.imagesUrl[0]} alt={item.name} />
-                        </div>
-
-                        <div className="cart-item-info">
-                            <h3>{item.name}</h3>
-                            <p className="cart-item-price">{`$${(item.price).toFixed(2)}`}</p>
-                        </div>
-
-                        <div className="cart-item-quantity">
-                            <Button
-                                variant="secondary" size="sm"
-                                onClick={() => updateQuantity(item._id, item.quantity - 1)}
-                            >
-                                <Icon name="minus" size={15}></Icon>
-                            </Button>
-                            <span>{item.quantity}</span>
-                            <Button
-                                variant="secondary" size="sm"
-                                onClick={() => updateQuantity(item._id, item.quantity + 1)}
-                            >
-                                <Icon name="plus" size={15}></Icon>
-                            </Button>
-                        </div>
-
-                        <div className="cart-item-total">
-                            ${(item.price * item.quantity).toFixed(2)}
-                        </div>
-
-                        <Button size="sm" onClick={() => removeFromCart(item._id)}>
-                            <Icon name="trash" size={15}></Icon>
-                            Eliminar del carrito
-                        </Button>
+                <div className="cart-summary">
+                    <div className="cart-total">
+                        <h2>Total: ${getTotalPrice().toFixed(2)}</h2>
                     </div>
-                ))}
-            </div>
 
-            <div className="cart-summary">
-                <div className="cart-total">
-                    <h2>Total: ${getTotalPrice().toFixed(2)}</h2>
+                    <Button variant="primary"
+                        onClick={() => navigate("/orders")}
+                        size="md"
+                        >Proceder al pago</Button>
                 </div>
-
-                <Button variant="primary" size="md">Proceder al pago</Button>
             </div>
         </div>
     );
