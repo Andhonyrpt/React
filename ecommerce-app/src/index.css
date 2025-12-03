@@ -50,13 +50,13 @@ body {
   --accent: var(--color-strong-blue);
   --accent-contrast: #ffffff;
   --accent-rgb: 38, 51, 108;
-  /* --danger: #dc2626;
+  --hover-bg: rgba(0, 0, 0, 0.08);
+  --danger: #dc2626;
   --warning: #f59e0b;
   --success: #16a34a;
   --text-muted: #475569;
   --text-light: #64748b;
-  --hover-bg: rgba(0, 0, 0, 0.08);
-  --active-bg: rgba(0, 0, 0, 0.12); */
+  --active-bg: rgba(0, 0, 0, 0.12);
 
   /* Variables adicionales */
   --radius: 8px;
@@ -201,6 +201,7 @@ a:hover {
 
 /* Responsive base */
 @media (max-width: 768px) {
+
   .grid-2,
   .grid-3,
   .grid-4 {

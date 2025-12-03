@@ -234,7 +234,7 @@
     transition: all 0.2s;
 }
 
-.user-avatar.large {
+.user-avatar-large {
     width: 48px;
     height: 48px;
 }

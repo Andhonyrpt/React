@@ -9,16 +9,26 @@ const Navigation = ({ isMobile = false, onLinkClick }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
-    // Procesar las categorías para obtener solo las principales (sin parentCategory)
-    const mainCategories = categoriesData.filter((cat) => !cat.parentCategory);
+    // Obtener categorías principales (que son parent de otras categorías)
+    const allParentIds = new Set(
+      categoriesData
+        .filter((cat) => cat.parentCategory)
+        .map((cat) => cat.parentCategory._id)
+    );
+
+    // Filtrar categorías que son padres o que no tienen parent
+    const mainCategories = categoriesData.filter(
+      (cat) => !cat.parentCategory || allParentIds.has(cat._id)
+    );
     setCategories(mainCategories);
   }, []);
 
   // Función para obtener subcategorías de una categoría principal
   const getSubcategories = (parentId) => {
-    return categoriesData.filter(
+    const subcategories = categoriesData.filter(
       (cat) => cat.parentCategory && cat.parentCategory._id === parentId
     );
+    return subcategories.sort((a, b) => a.name.localeCompare(b.name));
   };
 
   // Si es versión móvil, renderizar solo los enlaces principales

@@ -5,6 +5,7 @@ import Loading from "../common/Loading/Loading";
 import ErrorMessage from "../common/ErrorMessage/ErrorMessage";
 import List from "../List/List";
 import { fetchProducts } from "../../services/productService";
+import './SearchResultsList.css';
 
 export default function SearchResultsList() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -19,19 +20,17 @@ export default function SearchResultsList() {
 
     useEffect(() => {
         let isMounted = true;
-        setLoading(true);
 
         const loadProducts = async () => {
             try {
+                setLoading(true);
                 const data = await fetchProducts();
 
                 if (isMounted) {
                     setProducts(data);
                 }
-            } catch (err) {
-                setError(err)
             } finally {
-                setLoading(false);
+                if (isMounted) setLoading(false);
             }
         };
 
@@ -51,8 +50,8 @@ export default function SearchResultsList() {
 
         let result = products.filter((product) => {
             const matchesName = product.name.toLowerCase().includes(normalizedQuery);
-            const matchesDescription = product.description.toLowerCase().includes(normalizedQuery);
-            const matchesCategory = product.category.name.toLowerCase().includes(normalizedQuery);
+            const matchesDescription = product.description?.toLowerCase().includes(normalizedQuery);
+            const matchesCategory = product.category?.name?.toLowerCase().includes(normalizedQuery);
 
             return matchesName || matchesDescription || matchesCategory;
         });
@@ -71,48 +70,64 @@ export default function SearchResultsList() {
 
     const showNoResults = hasQuery && !loading && filteredProducts.length === 0;
 
+    const handleQueryChange = (event) => {
+        const value = event.target.value;
+        if (!value.trim()) {
+            setSearchParams({});
+            return;
+        }
+        setSearchParams({ q: value });
+    };
+
     return (
-        <div className="search-results">
+        <div className="search-results-fullwidth">
             <header className="search-results-header">
                 <div>
                     <h1 className="search-results-title">
                         {hasQuery ? `Resultados para ${query}` : `Explora nuestro catálogo`}
                     </h1>
                     <p className="search-results-description">
-                        {hasQuery ? `Estos son los productos que encontramos basándonos en tu búsqueda`
-                            : `Usa la barra de búqeuda para encontrar rapidamenete lo que necesitas.`
+                        {hasQuery ? `Estos son los productos que encontramos basados en tu búsqueda`
+                            : `Usa la barra de búsqueda para encontrar rapidamente lo que necesitas.`
                         }
                     </p>
                 </div>
+
+                {hasQuery && (
+                    <div className="search-results-controls">
+                        <label htmlFor="">Ordenar por:</label>
+                        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} >
+                            <option value="name">Nombre</option>
+                            <option value="price">Precio</option>
+                        </select>
+                        <button
+                            type="button"
+                            className="sort-btn"
+                            onClick={() => setSortBy(sortOrder === "asc" ? "desc" : "asc")}
+                        >
+                            {sortOrder === 'asc' ? 'Ascendente' : 'Descendente'}
+                        </button>
+                    </div>
+                )}
             </header>
 
-            {hasQuery && (
-                <div className="search-results-controls">
-                    <label htmlFor="">Ordenar por:</label>
-                    <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} >
-                        <option value="name">Nombre</option>
-                        <option value="price">Precio</option>
-                    </select>
-                    <Button
-                        type="button"
-                        className="sort-btn"
-                        onClick={() => setSortBy(sortOrder === "asc" ? "desc" : "asc")}
-                    >{sortOrder === 'asc' ? 'Ascedente' : 'Descendente'}</Button>
+            {loading && (
+                <div className="search-results-message">
+                    <h3>Buscando Productos</h3>
+                    <p>Esto puede tomar unos segundos</p>
                 </div>
             )}
 
-            {loading && (
-                <Loading>
-                    <h3>Buscando Productos</h3>
-                    <p>Esto puede tomar unos segundos</p>
-                </Loading>
-            )}
             {!loading && showNoResults && (
-                <ErrorMessage>
+                <div className="search-results-message">
                     <h3>No encontramos coincidencias</h3>
-                    <p>Prueba con otros términos o recorre nuestras <Link to='/offers'>ofertas destacadas</Link></p>
-                </ErrorMessage>
+                    <p>
+                        Prueba con otros términos o recorre nuestras{" "}
+                        <Link to='/offers'>ofertas destacadas</Link>
+                    </p>
+                </div>
             )}
+
             {!loading && hasQuery && !showNoResults && (
                 <List
                     products={filteredProducts}
@@ -120,13 +135,15 @@ export default function SearchResultsList() {
                     title={`Resultados para ${query}`}
                 ></List>
             )}
+
             {!loading && !hasQuery && (
-                <ErrorMessage>
+                <div className="search-results-message">
                     <h3>Buscas algo en especial?</h3>
-                    <p>Comienza a escribir en la barra de búsqueda y te mostraremos los resultados aquí mismo</p>
-                </ErrorMessage>
+                    <p>
+                        Comienza a escribir en la barra de búsqueda y te mostraremos los resultados aquí mismo
+                    </p>
+                </div>
             )}
         </div>
     );
-
-}
+};

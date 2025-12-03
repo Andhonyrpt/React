@@ -1,7 +1,7 @@
-import Button from "../common/Button";
-import Badge from "../common/Badge";
 import { useCart } from "../../context/CartContext";
 import { Link } from 'react-router-dom';
+import Button from "../common/Button";
+import Badge from "../common/Badge";
 import "./ProductCard.css";
 
 export default function ProductCard({ product, orientation = "horizontal" }) {
@@ -33,7 +33,6 @@ export default function ProductCard({ product, orientation = "horizontal" }) {
 
     const handleAddToCart = () => {
         addToCart(product, 1);
-        console.log(product, "agregando al carrito");
     }
 
     const productLink = `/product/${product._id}`;
@@ -50,11 +49,20 @@ export default function ProductCard({ product, orientation = "horizontal" }) {
                         e.target.src = "/img/products/placeholder.svg";
                     }}
                 />
+            </Link>
 
-                <h3 className="product-card-title">{name}</h3>
+            <div className="product-card-content">
+                <h3 className="product-card-title">
+                    <Link to={productLink}
+                        style={{ color: "inherit", textDecoration: "none" }}>
+                        {name}
+                    </Link>
+                </h3>
 
                 {description && (
-                    <p className="muted" style={{ fontSize: "13px", marginBottom: "8px" }}>
+                    <p className="muted"
+                        style={{ fontSize: "13px", marginBottom: "8px" }}
+                    >
                         {description.length > 60
                             ? `${description.substring(0, 60)}...`
                             : description}
@@ -62,22 +70,23 @@ export default function ProductCard({ product, orientation = "horizontal" }) {
                 )}
 
                 <div className="product-card-price">${price}</div>
+            </div>
 
-                <div className="product-card-actions">
-                    <div style={{ display: "flex", gap: "8px" }}>
-                        <Badge text={stockBadge.text} variant={stockBadge.variant} />
-                        {hasDiscount && (
-                            <Badge text={`-${product.discount}%`} variant="warning" />
-                        )}
-                    </div>
 
-                    <Button variant="primary" size="sm"
-                        disabled={stock === 0} onClick={handleAddToCart}
-                    >
-                        Agregar al carrito
-                    </Button>
+            <div className="product-card-actions">
+                <div style={{ display: "flex", gap: "8px" }}>
+                    <Badge text={stockBadge.text} variant={stockBadge.variant} />
+                    {hasDiscount && (
+                        <Badge text={`-${product.discount}%`} variant="warning" />
+                    )}
                 </div>
-            </Link>
+
+                <Button variant="primary" size="sm"
+                    disabled={stock === 0} onClick={handleAddToCart}
+                >
+                    Agregar al carrito
+                </Button>
+            </div>
         </div>
     );
-}
+};

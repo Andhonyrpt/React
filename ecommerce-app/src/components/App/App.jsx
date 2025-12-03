@@ -2,16 +2,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CartProvider } from "../../context/CartContext";
 import Layout from "../../layout/Layout";
 import Cart from "../../pages/Cart";
+import CategoryPage from '../../pages/CategoryPage';
+import Checkout from "../../pages/Checkout";
 import Home from "../../pages/Home";
 import Login from "../../pages/Login";
+import OrderConfirmation from '../../pages/OrderConfirmation';
+import Orders from '../../pages/Orders';
 import Product from "../../pages/Product";
 import Profile from '../../pages/Profile';
 import ProtectedRoute from "../../pages/ProtectedRoute";
 import SearchResults from "../../pages/SearchResults";
-import CategoryPage from '../../pages/CategoryPage';
-import PurchaseOrder from "../../pages/PurchaseOrder";
-import WishList from "../../pages/WishList";
 import Settings from "../../pages/Settings";
+import WishList from "../../pages/WishList";
 
 function App() {
   return (
@@ -27,15 +29,18 @@ function App() {
             <Route path="/category/:categoryId" element={<CategoryPage />} />
             <Route path="/profile"
               element={
-                <ProtectedRoute redirectTo="/login" allowedRoles={["admin", "customer", "Cliente"]}>
+                <ProtectedRoute
+                  redirectTo="/login"
+                  allowedRoles={["admin", "customer", "cliente"]}
+                >
                   <Profile />
                 </ProtectedRoute>
               }
             />
-            <Route path="/orders"
+            <Route path="/checkout"
               element={
                 <ProtectedRoute>
-                  <PurchaseOrder></PurchaseOrder>
+                  <Checkout></Checkout>
                 </ProtectedRoute>
               }
             />
@@ -46,6 +51,15 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/order-confirmation" element={<OrderConfirmation />} />
             <Route path="/settings"
               element={
                 <ProtectedRoute>

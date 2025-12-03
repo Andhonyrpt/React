@@ -104,18 +104,7 @@ export default function PurchaseOrder() {
                             })}
                         </ul>
                     </div>
-                    <form className="payment-form">
-                        <Input label="name" type="text" />
-                        <Input label="address1" type="text" />
-                        <Input label="address2" type="text" />
-                        <Input label="postalCode" type="text" />
-                        <Input label="city" type="text" />
-                        <Input label="country" type="text" />
-                        <Input label="reference" type="text" />
-                        <label>Guardar como predeterminada:</label>
-                        <input type="check"></input>
-                        <Button>Guardar</Button>
-                    </form>
+                    
 
                 </div>
                 <CartView />

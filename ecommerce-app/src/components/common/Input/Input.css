@@ -2,22 +2,22 @@
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: calc(var(--gap) * 0.5);
 }
 
 .input-label {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text);
 }
 
 .input-field {
-  padding: 12px 16px;
+  padding: calc(var(--gap) * 0.75) var(--gap);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
   color: var(--text);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.4;
   transition: all 0.2s ease;
 }

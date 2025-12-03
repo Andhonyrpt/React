@@ -1,6 +1,7 @@
 import { useCart } from "../../context/CartContext";
 import Button from "../common/Button";
 import Icon from "../common/Icon";
+// import './CartView.css';
 
 export default function CartView() {
 
@@ -11,17 +12,23 @@ export default function CartView() {
     } = useCart();
 
     return (
-        <>
+        <div className="cart-view">
+            <div className="cart-view-header">
+                <h2>
+                    {cartItems.length} {cartItems.length === 1 ? "articulo" : "articulos"}
+                </h2>
+            </div>
+
             {cartItems && cartItems.map((item) => (
                 <div className="cart-item" key={item._id}>
 
                     <div className="cart-item-image">
-                        <img src={item.imagesUrl[0]} alt={item.name} />
+                        <img src={item.imagesUrl[0]} alt={item.name} loading="lazy" />
                     </div>
 
                     <div className="cart-item-info">
                         <h3>{item.name}</h3>
-                        <p className="cart-item-price">{`$${(item.price).toFixed(2)}`}</p>
+                        <p className="cart-item-price">{`$${item.price.toFixed(2)}`}</p>
                     </div>
 
                     <div className="cart-item-quantity">
@@ -44,13 +51,14 @@ export default function CartView() {
                         ${(item.price * item.quantity).toFixed(2)}
                     </div>
 
-                    <Button size="sm" onClick={() => removeFromCart(item._id)}>
+                    <Button variant="ghost" className="danger"
+                        size="sm" onClick={() => removeFromCart(item._id)}
+                        title="Eliminar artículo"
+                    >
                         <Icon name="trash" size={15}></Icon>
-                        Eliminar del carrito
                     </Button>
                 </div>
-            ))
-            }
-        </>
-    )
-}
+            ))}
+        </div>
+    );
+};

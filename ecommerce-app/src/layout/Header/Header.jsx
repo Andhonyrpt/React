@@ -94,13 +94,14 @@ export default function Header() {
     const handleSearch = (e) => {
 
         e.preventDefault();
+        const query = searchQuery.trim();
 
-        if (searchQuery.trim() === 0) {
+        if (searchQuery === 0) {
             navigate('/search');
-        } else {
-            navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+            return;
         }
 
+        navigate(`/search?q=${encodeURIComponent(query)}`);
         setIsMobileSearchOpen(false);
         setIsMobileMenuOpen(false);
     };
@@ -143,8 +144,11 @@ export default function Header() {
 
     //Generar Iniciales del usuario
     const getUserInitials = (userData) => {
-        if (!userData || userData.name) return "U";
-        return userData.name
+        if (!userData) return "U";
+
+        const name = userData.displayName || userData.name || userData.email || "Usuario";
+
+        return name
             .split(" ")
             .map((n) => n[0])
             .join("")
@@ -154,7 +158,7 @@ export default function Header() {
 
     const getDisplayName = (userData) => {
         if (!userData) return "Usuario";
-        return userData.name || userData.email || "Usuario";
+        return userData.displayName || userData.name || userData.email || "Usuario";
     }
 
     return (
@@ -325,18 +329,18 @@ export default function Header() {
                                                         <Icon name="user" size={16} />
                                                         Mi Cuenta
                                                     </Link>
-                                                    <Link to="/mis-pedidos" className="user-link"
+                                                    <Link to="/orders" className="user-link"
                                                     >
                                                         <Icon name="package" size={16} />
                                                         Mis Pedidos
                                                     </Link>
-                                                    <Link to="/lista-deseos"
+                                                    <Link to="/wishlist"
                                                         className="user-link"
                                                     >
                                                         <Icon name="heart" size={16} />
                                                         Lista de Deseos
                                                     </Link>
-                                                    <Link to="/configuracion"
+                                                    <Link to="/settings"
                                                         className="user-link"
                                                     >
                                                         <Icon name="settings" size={16} />
@@ -481,7 +485,7 @@ export default function Header() {
                                         Mi Perfil
                                     </Link>
                                     <Link
-                                        to="/mis-pedidos"
+                                        to="/orders"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
@@ -489,7 +493,7 @@ export default function Header() {
                                         Mis Pedidos
                                     </Link>
                                     <Link
-                                        to="/lista-deseos"
+                                        to="/wishlist"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
@@ -497,7 +501,7 @@ export default function Header() {
                                         Lista de Deseos
                                     </Link>
                                     <Link
-                                        to="/configuracion"
+                                        to="/settings"
                                         className="mobile-nav-link"
                                         onClick={handleMobileMenuClose}
                                     >
@@ -515,7 +519,7 @@ export default function Header() {
                                     <span>{isDarkMode ? "Modo Claro" : "Modo Oscuro"}</span>
                                 </button>
                                 <Link
-                                    to="/ayuda"
+                                    to="/help"
                                     className="mobile-nav-link"
                                     onClick={handleMobileMenuClose}
                                 >
@@ -523,7 +527,7 @@ export default function Header() {
                                     Centro de Ayuda
                                 </Link>
                                 <Link
-                                    to="/contacto"
+                                    to="/contact"
                                     className="mobile-nav-link"
                                     onClick={handleMobileMenuClose}
                                 >

@@ -1,16 +1,16 @@
 /* Navigation Bar */
 .navigation {
-  background: var(--color-light-gray);
-  color: var(--color-dark);
-  border-top: 1px solid var(--color-strong-gray);
-  border-bottom: 1px solid var(--color-strong-gray);
+  background: var(--surface);
+  color: var(--text);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .navigation-content {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding: 8px 0;
+  gap: var(--gap-lg, 24px);
+  padding: var(--gap-xs, 8px) 0;
 }
 
 /* Categories Dropdown */

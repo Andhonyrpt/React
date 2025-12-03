@@ -1,6 +1,5 @@
 import { Navigate } from "react-router-dom";
 import { isAuthenticated, getCurrentUser } from "../utils/auth";
-import ErrorMessage from "../components/common/ErrorMessage/ErrorMessage";
 
 export default function ProtectedRoute({ children, redirectTo = "/login", allowedRoles }) {
 
@@ -11,8 +10,13 @@ export default function ProtectedRoute({ children, redirectTo = "/login", allowe
     if (allowedRoles) {
         const user = getCurrentUser();
 
-        if (allowedRoles.includes(user.role)) {
-            return <ErrorMessage>Acceso denegado</ErrorMessage>
+        if (!allowedRoles.includes(user.role)) {
+            return (
+                <div style={{ textAlign: "center", padding: "48px" }}>
+                    <h2>Acceso denegado</h2>
+                    <p>No tienes permisos para acceder a esta página</p>
+                </div>
+            );
         }
     }
 

@@ -20,7 +20,7 @@ export default function Home() {
                 const productData = await fetchProducts();
                 setProducts(productData);
             } catch (error) {
-                setError("No se pudieron cargar los productos. Intenta mas tarde")
+                setError("No se pudieron cargar los productos. Intenta más tarde")
                 setLoading([]);
             } finally {
                 setLoading(false);
@@ -34,19 +34,19 @@ export default function Home() {
     return (
         <div>
             <BannerCarousel banners={homeImages} />
-            {loading ?
-                <Loading>Cargando Productos...</Loading>
-                : error ? (
-                    <ErrorMessage>{error}</ErrorMessage>
-                ) : products.length > 0 ? (
-                    <List
-                        title="Productos recomendados"
-                        products={products}
-                        layout="grid"></List>
-                ) : (
-                    <ErrorMessage>No hay productos en el catálogo</ErrorMessage>
-                )
-            }
+            {loading ? (
+                <Loading>Cargando productos...</Loading>
+            ) : error ? (
+                <ErrorMessage>{error}</ErrorMessage>
+            ) : products.length > 0 ? (
+                <List
+                    title="Productos recomendados"
+                    products={products}
+                    layout="grid"
+                />
+            ) : (
+                <ErrorMessage>No hay productos en el catálogo</ErrorMessage>
+            )}
         </div>
     );
 };

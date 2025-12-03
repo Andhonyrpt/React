@@ -49,10 +49,12 @@
 .banner-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg,
-            rgba(0, 0, 0, 0.6)0%,
-            rgba(0, 0, 0, 0.3)50%,
-            transparent 100%);
+    background: linear-gradient(to right,
+            rgba(0, 0, 0, 0.75)0%,
+            rgba(0, 0, 0, 0.6)30%,
+            rgba(0, 0, 0, 0.3)60%,
+            rgba(0, 0, 0, 0.1)100%,
+        );
     z-index: 1;
 }
 
@@ -60,8 +62,12 @@
     position: relative;
     z-index: 2;
     color: var(--color-white);
-    padding: clamp(24px, 5vw, 48px);
+    padding: clamp(32px, 6vw, 64px);
     max-width: min(600px, 90%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
 .content-wrapper {
@@ -70,25 +76,28 @@
 
 .banner.title {
     color: var(--color-white);
-    margin: 0 0 clamp(8px, 2vw, 16px);
-    font-size: clamp(24px, 5vw, 56px);
+    margin: 0 0 clamp(12px, 2.5vw, 20px);
+    font-size: clamp(28px, 5vw, 56px);
     font-weight: 800;
     line-height: 1.1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
     letter-spacing: -0.02em;
+    max-width: 90%;
 }
 
 .banner-subtitle {
     color: rgba(255, 255, 255, 0.95);
-    font-size: clamp(14px, 2vw, 20px);
-    margin: 0 0 clamp(20px, 4vw, 32px);
+    font-size: clamp(16px, 2vw, 22px);
+    margin: 0 0 clamp(24px, 4vw, 36px);
     line-height: 1.5;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    max-width: 85%;
+    opacity: 0.95;
 }
 
 .banner-actions {
     display: flex;
-    gap: clamp(12px, 2vw, 16px);
+    gap: var(--gap);
     flex-wrap: wrap;
 }
 
@@ -103,10 +112,10 @@
     color: var(--color-white);
     width: clamp(40px, 8vw, 56px);
     height: clamp(40px, 8vw, 56px);
-    border-radius: 50%;
+    border-radius: var(--r5);
     cursor: pointer;
     z-index: 10;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,7 +166,7 @@
 .indicator {
     width: clamp(8px, 2vw, 12px);
     height: clamp(8px, 2vw, 12px);
-    border-radius: 50%;
+    border-radius: var(--r5);
     border: 2px solid rgba(255, 255, 255, 0.5);
     background: transparent;
     cursor: pointer;
@@ -215,21 +224,21 @@
 .progress-bar {
     height: 100%;
     background: var(--color-white);
-    transition: width 0.3s ease;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    transition: width 0.2s ease;
+    box-shadow: var(--elev-1);
 }
 
 /* Counter */
 .banner-counter {
     position: absolute;
-    top: clamp(16px, 3vw, 24px);
-    left: clamp(16px, 3vw, 24px);
+    top: var(--gap);
+    left: var(--gap);
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: var(--color-white);
     padding: clamp(6px, 1vw, 8px) clamp(8px, 2vw, 12px);
-    border-radius: 20px;
+    border-radius: var(--r4);
     font-size: clamp(12px, 2vw, 14px);
     font-weight: 600;
     z-index: 10;

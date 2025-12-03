@@ -25,11 +25,11 @@
 .breadcrumb-link {
   display: flex;
   align-items: center;
-  gap: 6px;
-  color: var(--text-muted);
+  gap: var(--gap-2xs, 6px);
+  color: var(--muted);
   text-decoration: none;
-  padding: 4px 8px;
-  border-radius: var(--r2);
+  padding: var(--gap-2xs, 4px) var(--gap-xs, 8px);
+  border-radius: var(--radius-sm, 4px);
   transition: all 0.2s ease;
   font-weight: 500;
 }
@@ -68,7 +68,8 @@
   }
 
   .breadcrumb-link .breadcrumb-text {
-    display: none; /* Ocultar texto "Inicio" en móvil, solo mostrar icono */
+    display: none;
+    /* Ocultar texto "Inicio" en móvil, solo mostrar icono */
   }
 
   .breadcrumb-separator {

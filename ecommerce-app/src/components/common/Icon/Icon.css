@@ -18,19 +18,19 @@
 }
 
 .icon-secondary {
-  color: var(--text-muted);
+  color: var(--muted);
 }
 
 .icon-success {
-  color: var(--success);
+  color: var(--color-green);
 }
 
 .icon-warning {
-  color: var(--warning);
+  color: var(--color-yellow);
 }
 
 .icon-danger {
-  color: var(--danger);
+  color: var(--color-red);
 }
 
 /* Efectos hover */
